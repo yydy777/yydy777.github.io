@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>日期计算器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+            transform: scale(1.25);
+            /* 这会将页面内容放大 50% */
+            transform-origin: 35% 50%;
+            /* 设置变换的基点 */
+        }
+
+        .container {
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="date"],
+        input[type="number"] {
+            border-color: #4CAF50;
+            width: 60%;
+            padding: 10px;
+            border-color: #4CAF50;
+            border-style: solid;
+            border-width: 1px;
+            box-shadow: none;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            border-radius: 10px;
+        }
+
+        .inline-elements {
+            display: flex;
+            align-items: center;
+        }
+
+        .inline-elements>* {
+            margin: 0 5px 0 0;
+            border-radius: 10px;
+        }
+
+        p {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inline-elements">
+            <h1>日期计算器</h1>
+            <button onclick="clearResults()">清除</button>
+        </div>
+
+        <p id="r75"></p>
+        <label for="startDate">选择开始日期：</label>
+        <div class="inline-elements">
+            <input type="date" id="startDate">
+            <button onclick="calculateDate()">计算</button>
+        </div>
+         <p>请在75天后的日期来专区：</p>
+        <p id="result75"></p>
+        <p id="result90"></p>
+
+
+        <label for="days">输入天数（正数/负数）：</label>
+        <div class="inline-elements">
+            <input type="number" id="days" placeholder="默认值75">
+            <button onclick="custDate()">计算</button>
+        </div>
+        <p id="result"></p>
+
+<!-- 
+        <label for="endDate">选择结束日期：</label>
+        <div class="inline-elements">
+            <input type="date" id="endDate">
+            <button onclick="DateDifference()">计算</button>
+        </div>
+        <p id="resultApart"></p>
+-->
+
+
+
+    </div>
+        <script>
+	          // 75天前
+	        var today1 = new Date();
+	        today1.setDate(today1.getDate() - 75);
+	        document.getElementById('r75').textContent = '75天前：' + today1.toISOString().split('T')[0];
+	        function calculateDate() {
+	            var selectedDate = new Date(document.getElementById('startDate').value);
+
+	            // 计算并显示所选日期加上75天的日期  
+	            var resultDate75 = new Date(selectedDate);
+	            resultDate75.setDate(resultDate75.getDate() + 75);
+	            document.getElementById('result75').textContent = '75天后的日期：' + resultDate75.toISOString().split('T')[0];
+
+	            // 计算并显示所选日期加上90天的日期  
+	            var resultDate90 = new Date(selectedDate);
+	            resultDate90.setDate(resultDate90.getDate() + 90);
+	            document.getElementById('result90').textContent = '90天后的日期：' + resultDate90.toISOString().split('T')[0];
+	        }
+	        
+	        function custDate() {
+	            var selectedDate = new Date(document.getElementById('startDate').value);
+	            var daysInput = document.getElementById('days');
+	            if (daysInput.value.trim() === '') {
+	                daysInput.value = '75'; // 如果为空，则设置默认值为75
+	            }
+
+	            var daysToAdd = parseInt(daysInput.value, 10); // 显式指定基数为10  
+	            if (daysInput.value.trim() === '') {
+	                daysInput.value = '75'; // 如果为空，则设置默认值为75
+	            }
+
+	            // 计算并显示所选日期加上指定天数的日期  
+	            var resultDate = new Date(selectedDate);
+	            resultDate.setDate(resultDate.getDate() + daysToAdd);
+	            document.getElementById('result').textContent = daysToAdd + '天后的日期：' + resultDate.toISOString().split('T')[0];
+	        }
+
+     </script>
+     
+     
+    <script>
+        // 设置默认日期为今天      
+        document.getElementById('startDate').valueAsDate = new Date();
+
+        // 设置默认日期为x天后       
+        var today = new Date();
+        today.setDate(today.getDate() + 15);
+        document.getElementById('endDate').valueAsDate = today;
+        
+
+
+
+        function DateDifference() {
+            var selectedDate = new Date(document.getElementById('startDate').value);
+            var endDate = new Date(document.getElementById('endDate').value);
+
+            // 计算两个日期之间的差异（以毫秒为单位）
+            var timeDiff = endDate.getTime() - selectedDate.getTime();
+
+            // 将时间差异转换为天数
+            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            // 显示相距天数
+            document.getElementById('resultApart').textContent = '日期相距天数：' + daysDiff;
+        }
+
+
+
+
+        // 清除所有结果文本
+        function clearResults() {
+            ['result', 'result75', 'result90', 'resultApart'].forEach(function (id) {
+                document.getElementById(id).innerHTML = '';
+            });
+            document.getElementById('days').value = '';
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>搜索一下</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+
+  <link rel="shortcut icon" href="img/favicons/favicon.ico">
+  <link rel="icon" href="img/favicons/favicon.png">
+  <link rel="stylesheet" href="css/spectre.css">
+  <link rel="stylesheet" href="css/spectre-icons.css">
+  <link rel="stylesheet" href="css/spectre-exp.css">
+  <link rel="stylesheet" href="css/docs.css">
+
+  <script src="template/header.js"></script>
+  <script src="template/sidebar.js"></script>
+  <script src="template/footer.js"></script>
+  
+<style>  
+  .custom-input,.lan-group {  
+    height: 100px;
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    font-size: 22px;
+  }  
+  
+
+
+</style>  
+</head>
+
+<body class="docs-container off-canvas off-canvas-sidebar-show">
+
+  <header class="docs-navbar" id="header"></header>
+
+  <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
+
+  <a class="off-canvas-overlay" href="#close"></a>
+
+  <div class="off-canvas-content">
+    <div class="docs-content" id="content">
+      <main class="container">
+
+        <h3 class="s-title">搜索一下</h3>
+
+<div class="btn-group mb-2">
+  <button class="btn ml-1" onclick="showSubcategory('search', 'link-baidu')">搜索</button>
+  <button class="btn ml-1" onclick="showSubcategory('community', 'link-bilibili')">社区</button>
+</div> 
+
+
+        
+<form class="form-group  d-flex col-10" id="searchForm" method="get">
+  <input class="form-input col-8"  id="searchInput" type="text" name="wd"  placeholder="输入网址前缀">
+  <input class="btn btn-primary ml-1"  type="submit" value="搜索">
+</form>
+        
+<div class="btn-group subcategory" id="sub-search">
+  <button id="link-baidu" class="btn" onclick="setSearchAction('baidu')">百度</button>
+  <button id="link-google" class="btn" onclick="setSearchAction('google')">谷歌</button>
+  <button id="link-bing" class="btn" onclick="setSearchAction('bing')">必应</button>
+</div> 
+
+<div class="btn-group subcategory" id="sub-community">
+  <button id="link-bilibili" class="btn" onclick="setSearchAction('bilibili')">哔哩哔哩</button>
+</div> 
+
+
+      </main>
+<script>
+// 显示子分类并设置默认搜索引擎或社区
+function showSubcategory(category, defaultLink) {
+  // 隐藏所有子分类
+  var subcategories = document.getElementsByClassName('subcategory');
+  for (var i = 0; i < subcategories.length; i++) {
+    subcategories[i].style.display = 'none';
+  }
+  // 显示选中的子分类
+  var selectedSubcategory = document.getElementById('sub-' + category);
+  if (selectedSubcategory) {
+    selectedSubcategory.style.display = 'block';
+    // 如果指定了默认链接，则模拟点击该链接
+    if (defaultLink) {
+      document.getElementById(defaultLink).click();
+    }
+  }
+}
+
+// 设置搜索表单的行为
+function setSearchAction(engine) {
+  var form = document.getElementById('searchForm');
+  var input = document.getElementById('searchInput');
+  
+  switch (engine) {
+    case 'baidu':
+      form.action = 'https://www.baidu.com/s';
+      input.name = 'wd';
+      break;
+    case 'google':
+      form.action = 'https://www.google.com/search';
+      input.name = 'q';
+      break;
+    case 'bing':
+      form.action = 'https://www.bing.com/search';
+      input.name = 'q';
+      break;
+    case 'bilibili':
+      form.action = 'https://search.bilibili.com/all';
+      input.name = 'keyword';
+      break;
+    default:
+      // 默认的搜索引擎或错误处理
+      break;
+  }
+}
+
+
+// 页面加载时默认显示搜索的子分类并设置百度为默认搜索引擎
+window.onload = function() {
+  showSubcategory('search', 'link-baidu');
+};
+</script>
+
+
+      <script type="text/javascript" src="js/so.js"></script>
+
+      <footer class="docs-footer container grid-lg" id="footer"></footer>
+
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>

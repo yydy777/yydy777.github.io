@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>二维码生成</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+
+  <link rel="shortcut icon" href="img/favicons/favicon.ico">
+  <link rel="icon" href="img/favicons/favicon.png">
+  <link rel="stylesheet" href="css/spectre.css">
+  <link rel="stylesheet" href="css/spectre-icons.css">
+  <link rel="stylesheet" href="css/spectre-exp.css">
+  <link rel="stylesheet" href="css/docs.css">
+
+  <script src="template/header.js"></script>
+  <script src="template/sidebar.js"></script>
+  <script src="template/footer.js"></script>
+
+  <script type="text/javascript" src="js/qrcode.min.js"></script>
+
+</head>
+
+<body class="docs-container off-canvas off-canvas-sidebar-show">
+
+  <header class="docs-navbar" id="header"></header>
+
+  <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
+
+  <a class="off-canvas-overlay" href="#close"></a>
+
+  <div class="off-canvas-content">
+    <div class="docs-content" id="content">
+      <main class="container" id="qr">
+
+        <h3 class="s-title">二维码生成<a class="anchor" href="#qr" aria-hidden="true">#</a></h3>
+        <!-- normal input group with button -->
+
+        <div class="qrcode-border" id="qrcode"></div>
+
+        <div class="form-group col-10">
+          <input class="form-input" type="text" id="inputText" placeholder="输入内容">
+        </div>
+
+
+        <div class="form-group">
+          <button class="btn mb-1" id="copyButton">复制</button>
+          <button class="btn mb-1" id="pasteButton">粘贴</button>
+          <button class="btn mb-1" onclick="Clearcode()">清空</button>
+          <button class="btn mb-1" onclick="generateQRCode()">生成</button>
+        </div>
+
+
+
+
+
+      </main>
+      <script type="text/javascript" src="js/qrcode.index.js"></script>
+
+
+
+      <script type="text/javascript" src="js/so.js"></script>
+
+      <footer class="docs-footer container grid-lg" id="footer"></footer>
+
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>

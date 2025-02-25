@@ -1,0 +1,114 @@
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: #f1f9f9;
+}
+
+.main {
+	width: 90%;
+	height: 80%;
+	text-align: center;
+	margin: 5%;
+}
+
+.state {
+	text-align: center;
+	margin-top: 2%;
+}
+
+.inputs {
+	background: #03A9F4;
+	color: #fff;
+	height: 100%;
+	border-radius: 20px;
+	border: transparent;
+	outline: none;
+	text-align: center;
+	margin: 5% 1%;
+}
+
+.inputs:HOVER {
+	background: #F44336;
+	color: #fff;
+}
+.remind {
+	margin-top: 10%;
+	color: #03A9F4;
+	font-size: 36px;
+	visibility: hidden;
+}
+
+.button {
+	background: #03A9F4;
+	color: #fff;
+	cursor: pointer;
+	width: 90px;
+	height: 40px;
+	font-size: 24px;
+	border-radius: 20px;
+	border: transparent;
+	outline: none;
+}
+
+.button:HOVER {
+	background: #F44336;
+	color: #fff;
+}
+
+.tips {
+	height: 30px;
+	font-size: 18px;
+	background: #03A9F4;
+	color: #fff;
+	border-radius: 20px;
+	border: transparent;
+}
+.tips:HOVER {
+	background: #F44336;
+	color: #fff;
+}
+.tip{
+	background: #fff;
+	color: #000;
+}
+
+
+    /* 手机等小屏幕手持设备 */
+@media  (min-width: 300px) {
+	.time {
+		height: 15%;
+	}
+
+	.inputs {
+		width: 25%;
+		font-size: 50px;
+	}
+}
+
+
+    /* 平板之类的宽度 1024 以下设备 */
+@media  (min-width: 600px) and (max-width: 1028px) {
+	.time {
+		height: 30%;
+	}
+
+	.inputs {
+		width: 29%;
+		font-size: 100px;
+	}
+}
+    /* PC客户端或大屏幕设备: 1028px 至更大 */
+@media (min-width: 1029px) {
+	.time {
+		height: 40%;
+	}
+
+	.inputs {
+		width: 20%;
+		font-size: 150px;
+	}
+}
+   

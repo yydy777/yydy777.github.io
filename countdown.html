@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>倒计时</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+
+  <link rel="shortcut icon" href="img/favicons/favicon.ico">
+  <link rel="icon" href="img/favicons/favicon.png">
+  <link rel="stylesheet" href="css/spectre.css">
+  <link rel="stylesheet" href="css/spectre-icons.css">
+  <link rel="stylesheet" href="css/spectre-exp.css">
+  <link rel="stylesheet" href="css/docs.css">
+
+  <script src="template/header.js"></script>
+  <script src="template/sidebar.js"></script>
+  <script src="template/footer.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/time.css">
+  <script type="text/javascript" src="js/time.js"></script>
+
+
+</head>
+
+<body class="docs-container off-canvas off-canvas-sidebar-show">
+
+  <header class="docs-navbar" id="header"></header>
+
+  <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
+
+  <a class="off-canvas-overlay" href="#close"></a>
+
+  <div class="off-canvas-content">
+    <div class="docs-content" id="content">
+      <main class="container" id="qr">
+
+        <h3 class="s-title">倒计时<a class="anchor" href="#qr" aria-hidden="true">#</a></h3>
+        <!-- normal input group with button -->
+        <div class="text-center">
+        <label>请选择铃声：</label>
+	        <select id="v" class="tips label label-rounded label-primary">
+	          <option value="1" class="tip">铃声 1</option>
+	          <option value="2" class="tip">铃声 2</option>
+	          <option value="3" class="tip">铃声 3</option>
+	        </select>
+        </div>
+        <div class="time">
+          <!-- 限制数字输入且替换为0；onkeyup="this.value=this.value.replace(/\D/g,'0')"-->
+          <input id="s" value="0" class="inputs btn " onkeyup="this.value=this.value.replace(/\D/g,'0')">
+          <input id="f" value="0" class="inputs btn " onkeyup="this.value=this.value.replace(/\D/g,'0')">
+          <input id="m" value="0" class="inputs btn " onkeyup="this.value=this.value.replace(/\D/g,'0')">
+        </div>
+
+        <div id="remind" class="remind text-center mb-2 text-primary">正在倒计时</div>
+
+        <div class="form-group text-center">
+          <button onClick="start()" class="btn mb-1">开 始</button>
+          <button onClick="stop()" class="btn mb-1">停止</button>
+          <button onClick="clearinput()" class="btn mb-1">清零</button>
+        </div>
+
+        <audio src="music/2.mp3" id="music" controls="controls" loop="loop" style="display: none;"></audio>
+
+
+
+
+
+
+      </main>
+
+
+
+
+      <script type="text/javascript" src="js/so.js"></script>
+
+      <footer class="docs-footer container grid-lg" id="footer"></footer>
+
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>

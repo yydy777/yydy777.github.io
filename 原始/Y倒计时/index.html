@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>倒计时</title>
+		<link rel="stylesheet" type="text/css" href="css/css.css">
+		<script type="text/javascript" src="js/js.js"></script>
+	</head>
+	<body>
+		<div class="main">
+			<label style="font-size: 24px;">
+				请选择铃声：
+			</label>
+			<select id="v" class="tips">
+				<option value="1" class="tip">铃声 1</option>
+				<option value="2" class="tip">铃声 2</option>
+				<option value="3" class="tip">铃声 3</option>
+			</select>
+
+			<div class="time">
+			<!-- 限制数字输入且替换为0；onkeyup="this.value=this.value.replace(/\D/g,'0')"-->
+				<input id="s" value="0" class="inputs" onkeyup="this.value=this.value.replace(/\D/g,'0')">
+				<input id="f" value="0" class="inputs" onkeyup="this.value=this.value.replace(/\D/g,'0')">
+				<input id="m" value="0" class="inputs" onkeyup="this.value=this.value.replace(/\D/g,'0')">
+			</div>
+			<div id="remind" class="remind">正在倒计时</div>
+
+			<div class="state">
+			<button onClick="start()" class="button">开 始</button>
+			<button onClick="stop()" class="button">停止</button>
+			<button onClick="clearinput()" class="button">清零</button>
+			</div>
+
+			<audio src="music/2.mp3" id="music" controls="controls" loop="loop" style="display: none;"></audio>
+		</div>
+	</body>
+
+</html>

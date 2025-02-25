@@ -1,0 +1,56 @@
+
+.inputs {
+	height: 256px;
+	border-radius: 20px;
+	outline: none;
+	text-align: center;
+	margin: 2% 1%;
+	width: 30%;
+}
+
+
+
+
+.remind {
+	font-size: 18px;
+	visibility: hidden;
+}
+
+
+
+.tips {
+	height: 30px;
+	border-radius: 20px;
+	border: transparent;
+}
+
+.tip{
+	background: #fff;
+	color: #000;
+	font-size: 16px;
+}
+
+
+    /* 手机等小屏幕手持设备 */
+@media  (min-width: 300px) {
+	.inputs {
+		font-size: 68px;
+		height: 128px;
+	}
+}
+
+    /* 平板之类的宽度 1024 以下设备 */
+@media  (min-width: 600px) and (max-width: 1028px) {
+	.inputs {
+		font-size: 98px;
+		height: 256px;
+	}
+}
+    /* PC客户端或大屏幕设备: 1028px 至更大 */
+@media (min-width: 1128px) {
+	.inputs {
+		font-size: 148px;
+		height: 384px;
+	}
+}
+   

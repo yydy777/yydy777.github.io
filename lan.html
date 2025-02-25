@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>局域网访问</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+
+  <link rel="shortcut icon" href="img/favicons/favicon.ico">
+  <link rel="icon" href="img/favicons/favicon.png">
+  <link rel="stylesheet" href="css/spectre.css">
+  <link rel="stylesheet" href="css/spectre-icons.css">
+  <link rel="stylesheet" href="css/spectre-exp.css">
+  <link rel="stylesheet" href="css/docs.css">
+
+  <script src="template/header.js"></script>
+  <script src="template/sidebar.js"></script>
+  <script src="template/footer.js"></script>
+  
+<style>  
+  .custom-input,.lan-group {  
+    height: 100px;
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    font-size: 22px;
+  }  
+  
+
+
+</style>  
+</head>
+
+<body class="docs-container off-canvas off-canvas-sidebar-show">
+
+  <header class="docs-navbar" id="header"></header>
+
+  <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
+
+  <a class="off-canvas-overlay" href="#close"></a>
+
+  <div class="off-canvas-content">
+    <div class="docs-content" id="content">
+      <main class="container">
+
+        <h3 class="s-title">局域网访问</h3>
+
+<div class="lan-group mb-2">  
+  <input class="btn custom-input" type="number" id="ip1" value="192">.
+  <input class="btn custom-input" type="number" id="ip2" value="168">.
+  <input class="btn custom-input" type="number" id="ip3" value="1">.
+  <input class="btn custom-input" type="number" id="ip4" value="101">:
+  <input class="btn custom-input" type="number" id="port" value="1111">  
+</div>  
+
+        <div class="form-group text-center">
+            <button class="btn mb-1" onclick="defaultIp()">默认</button>
+            <button class="btn mb-1" onclick="clearAll()">所有</button>
+            <button class="btn mb-1" onclick="clearIP34()">3/4</button>
+            <button class="btn mb-1" onclick="clearPort()">端口</button>
+            
+		<button class="btn mb-1" data-port="1234" onclick="fillPort(this)">1234</button>  
+		<button class="btn mb-1" data-port="1111" onclick="fillPort(this)">1111</button>  
+		<button class="btn mb-1" data-port="50551" onclick="fillPort(this)">50551</button> 
+            
+            <button class="btn mb-1 btn-primary"  onclick="connectToAddress()">访问</button>
+        </div>
+
+
+
+      </main>
+<script>
+        function clearAll() {
+            document.getElementById('ip1').value = '';
+            document.getElementById('ip2').value = '';
+            document.getElementById('ip3').value = '';
+            document.getElementById('ip4').value = '';
+            document.getElementById('port').value = '';
+        }
+        function defaultIp() {
+            document.getElementById('ip1').value = '192';
+            document.getElementById('ip2').value = '168';
+            document.getElementById('ip3').value = '1';
+            document.getElementById('ip4').value = '101';
+            document.getElementById('port').value = '1111';
+        }
+
+        function clearIP34() {
+            document.getElementById('ip3').value = '';
+            document.getElementById('ip4').value = '';
+        }
+
+        function clearPort() {
+            document.getElementById('port').value = '';
+        }
+
+        function connectToAddress() {
+            var ip1 = document.getElementById('ip1').value;
+            var ip2 = document.getElementById('ip2').value;
+            var ip3 = document.getElementById('ip3').value;
+            var ip4 = document.getElementById('ip4').value;
+            var port = document.getElementById('port').value;
+            var address = 'http://' + ip1 + '.' + ip2 + '.' + ip3 + '.' + ip4 + ':' + port;
+            window.open(address, '_blank');
+        }
+        function fillPort(button) {  
+		  // 读取按钮的data-port属性值  
+		  var portValue = button.getAttribute('data-port');  
+		  // 将值设置为input元素的value  
+		  document.getElementById('port').value = portValue;  
+	}
+
+
+    </script>
+
+
+      <script type="text/javascript" src="js/so.js"></script>
+
+      <footer class="docs-footer container grid-lg" id="footer"></footer>
+
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>

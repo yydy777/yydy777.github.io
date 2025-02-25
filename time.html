@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>倒计时</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+
+  <link rel="shortcut icon" href="img/favicons/favicon.ico">
+  <link rel="icon" href="img/favicons/favicon.png">
+  <link rel="stylesheet" href="css/spectre.css">
+  <link rel="stylesheet" href="css/spectre-icons.css">
+  <link rel="stylesheet" href="css/spectre-exp.css">
+  <link rel="stylesheet" href="css/docs.css">
+
+  <script src="template/header.js"></script>
+  <script src="template/sidebar.js"></script>
+  <script src="template/footer.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/time.css">
+
+
+</head>
+
+<body class="docs-container off-canvas off-canvas-sidebar-show">
+
+  <header class="docs-navbar" id="header"></header>
+
+  <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
+
+  <a class="off-canvas-overlay" href="#close"></a>
+
+  <div class="off-canvas-content">
+    <div class="docs-content" id="content">
+      <main class="container">
+
+        <h3 class="s-title">实时时间</h3>
+    <div class="time">  
+        <button id="hours" class="inputs btn">00</button>  
+        <button id="minutes" class="inputs btn">00</button>  
+        <button id="seconds" class="inputs btn">00</button>  
+    </div>  
+      </main>
+
+
+  
+<script>  
+document.addEventListener('DOMContentLoaded', function() {  
+    // 定义一个函数来更新时间显示  
+    function updateTime() {  
+        const now = new Date();  
+        const hours = now.getHours();  
+        const minutes = now.getMinutes();  
+        const seconds = now.getSeconds();  
+  
+        // 使用padStart来确保时间总是两位数  
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');  
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');  
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');  
+    }  
+  
+    // 设置定时器，每秒调用一次updateTime函数  
+    setInterval(updateTime, 1000);  
+  
+    // 可以在页面加载完成后立即调用一次，以确保时间立即显示  
+    updateTime();  
+});  
+</script>
+
+      <script type="text/javascript" src="js/so.js"></script>
+
+      <footer class="docs-footer container grid-lg" id="footer"></footer>
+
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>

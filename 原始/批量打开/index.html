@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>常用小工具-YYDY777</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="css/style.css" rel="stylesheet">
+		
+		
+		<script type="text/javascript" src="js/qrcode.min.js"></script>
+
+	</head>
+	<body>
+		<header class="textcenter">常用小工具</header>
+		<div class="mian">
+			<div class="left">
+				<h2>批量打开网址内容框</h2>
+				<textarea id="websitesInput" placeholder="输入多行网址或内容"></textarea>
+				<input class="input" type="text" id="prefixInput" placeholder="输入网址前缀">
+				<div class="customButton">
+					<button class="button" onclick="handleButtonClick(event)" value="这是按钮1">Button 1</button>
+					<button class="button" onclick="handleButtonClick(event)" value="这是按钮2">Button 2</button>
+					<button class="button" onclick="handleButtonClick(event)" value="这是按钮3">Button 3</button>
+
+					<button class="button" onclick="clearPrefix()">清空前缀</button>
+					<button class="button" onclick="clearInput()">清空内容</button>
+					<button class="button" id="webButton">粘贴内容</button>
+					<button class="button" onclick="openWebsites()">批量打开</button>
+				</div>
+			</div>
+			<div class="right">
+				<h2>请输入内容生成二维码：</h2>
+				<input type="text" class="input" id="inputText" placeholder="请输入内容">
+				<div class="customButton">
+					<button class="button" id="copyButton">复制</button>
+					<button class="button" id="pasteButton">粘贴</button>
+					<button class="button" onclick="Clearcode()">清空</button>
+					<button class="button" onclick="generateQRCode()">生成</button>
+				</div>
+
+				<div class="qrcode-border" id="qrcode"></div>
+				
+				<script type="text/javascript" src="js/index.js"></script>
+				<script type="text/javascript" src="js/qrcode.index.js"></script>
+				
+			</div>
+		</div>
+	</body>
+</html>

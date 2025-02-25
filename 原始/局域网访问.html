@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局域网访问</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .wrapper {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ip-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .ip-inputs input {
+            flex: 1;
+            margin-right: 5px;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 6px;
+            max-width: 12%;
+        }
+
+        .ip-inputs input[type=number]::-webkit-inner-spin-button,
+        .ip-inputs input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        .ip-inputs input:last-child {
+            margin-right: 0;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1 1 auto;
+            padding: 6px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            font-size: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            button {
+                flex-basis: calc(50% - 6px);
+                padding: 4px;
+                font-size: 14px;
+            }
+            .ip-inputs input {
+            width: 2%;
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>局域网访问</h1>
+        <div class="ip-inputs">
+            <input type="number" id="ip1" value="192">.
+            <input type="number" id="ip2" value="168">.
+            <input type="number" id="ip3" value="1">.
+            <input type="number" id="ip4" value="101">:
+            <input type="number" id="port" value="1111">
+        </div>
+        <div class="button-row">
+        
+            <button onclick="defaultIp()">默认</button>
+            <button onclick="clearAll()">所有</button>
+            <button onclick="clearIP34()">3/4</button>
+            <button onclick="clearPort()">端口</button>
+            <button class="connect-button" onclick="connectToAddress()">访问</button>
+        </div>
+    </div>
+
+    <script>
+        function clearAll() {
+            document.getElementById('ip1').value = '';
+            document.getElementById('ip2').value = '';
+            document.getElementById('ip3').value = '';
+            document.getElementById('ip4').value = '';
+            document.getElementById('port').value = '';
+        }
+        function defaultIp() {
+            document.getElementById('ip1').value = '192';
+            document.getElementById('ip2').value = '168';
+            document.getElementById('ip3').value = '1';
+            document.getElementById('ip4').value = '101';
+            document.getElementById('port').value = '1111';
+        }
+
+        function clearIP34() {
+            document.getElementById('ip3').value = '';
+            document.getElementById('ip4').value = '';
+        }
+
+        function clearPort() {
+            document.getElementById('port').value = '';
+        }
+
+        function connectToAddress() {
+            var ip1 = document.getElementById('ip1').value;
+            var ip2 = document.getElementById('ip2').value;
+            var ip3 = document.getElementById('ip3').value;
+            var ip4 = document.getElementById('ip4').value;
+            var port = document.getElementById('port').value;
+            var address = 'http://' + ip1 + '.' + ip2 + '.' + ip3 + '.' + ip4 + ':' + port;
+            window.open(address, '_blank');
+        }
+    </script>
+</body>
+</html>

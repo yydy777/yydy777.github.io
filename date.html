@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>日期计算器</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+
+  <link rel="shortcut icon" href="img/favicons/favicon.ico">
+  <link rel="icon" href="img/favicons/favicon.png">
+  <link rel="stylesheet" href="css/spectre.css">
+  <link rel="stylesheet" href="css/spectre-icons.css">
+  <link rel="stylesheet" href="css/spectre-exp.css">
+  <link rel="stylesheet" href="css/docs.css">
+
+  <script src="template/header.js"></script>
+  <script src="template/sidebar.js"></script>
+  <script src="template/footer.js"></script>
+
+</head>
+
+<body class="docs-container off-canvas off-canvas-sidebar-show">
+
+  <header class="docs-navbar" id="header"></header>
+
+  <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
+
+  <a class="off-canvas-overlay" href="#close"></a>
+
+  <div class="off-canvas-content">
+    <div class="docs-content" id="content">
+      <main class="container">
+        <h3 class="s-title">日期计算器 <button class="btn btn-primary mb-1" onclick="clearResults()">清除</button> </h3>
+
+        
+
+        <div class="form-group ">        
+        <h4 class="mb-1 text-primary" id="r75"></h4>
+          <label for="startDate">选择开始日期：</label>
+          <div class="inline-elements d-flex">
+            <input class="form-input col-10 " type="date" id="startDate">
+            <button class="btn btn-primary mb-1 ml-1" onclick="calculateDate()">计算</button>
+          </div>
+         <p class="mb-0" id="tiptext"></p>
+          <p class="mb-0 text-primary" id="result75"></p>
+          <p class="mb-0 text-primary" id="result90"></p>
+        </div>
+        <div class="form-group ">
+          <label for="days">输入天数（正数/负数）：</label>
+          <div class="inline-elements d-flex">
+            <input class="form-input col-10" type="number" id="days" placeholder="默认值15">
+            <button class="btn btn-primary mb-1  ml-1" onclick="custDate()">计算</button>
+          </div>
+          <p class="mb-0 text-primary" id="result"></p>
+        </div>
+        <div class="form-group ">
+          <label for="endDate">选择结束日期：</label>
+          <div class="inline-elements d-flex">
+            <input class="form-input col-10" type="date" id="endDate">
+            <button class="btn btn-primary mb-1  ml-1" onclick="DateDifference()">计算</button>
+          </div>
+          <p class="mb-0 text-primary" id="resultApart"></p>
+        </div>
+
+
+
+
+
+      </main>
+
+        <script>
+	          // 75天前
+	        var today1 = new Date();
+	        today1.setDate(today1.getDate() - 75);
+	        document.getElementById('r75').textContent = '75天前：' + today1.toISOString().split('T')[0];
+	        function calculateDate() {
+	            var selectedDate = new Date(document.getElementById('startDate').value);
+	            document.getElementById('tiptext').textContent = '请在75天后的日期来转区，需转15天。期间不可充值和消费；';
+
+	            // 计算并显示所选日期加上75天的日期  
+	            var resultDate75 = new Date(selectedDate);
+	            resultDate75.setDate(resultDate75.getDate() + 75);
+	            document.getElementById('result75').textContent = '75天后的日期：' + resultDate75.toISOString().split('T')[0];
+
+	            // 计算并显示所选日期加上90天的日期  
+	            var resultDate90 = new Date(selectedDate);
+	            resultDate90.setDate(resultDate90.getDate() + 90);
+	            document.getElementById('result90').textContent = '90天后的日期：' + resultDate90.toISOString().split('T')[0];
+	        }
+	        
+	        function custDate() {
+	            var selectedDate = new Date(document.getElementById('startDate').value);
+	            var daysInput = document.getElementById('days');
+	            if (daysInput.value.trim() === '') {
+	                daysInput.value = '75'; // 如果为空，则设置默认值为75
+	            }
+
+	            var daysToAdd = parseInt(daysInput.value, 10); // 显式指定基数为10  
+	            if (daysInput.value.trim() === '') {
+	                daysInput.value = '75'; // 如果为空，则设置默认值为75
+	            }
+
+	            // 计算并显示所选日期加上指定天数的日期  
+	            var resultDate = new Date(selectedDate);
+	            resultDate.setDate(resultDate.getDate() + daysToAdd);
+	            document.getElementById('result').textContent = daysToAdd + '天后的日期：' + resultDate.toISOString().split('T')[0];
+	        }
+
+     </script>
+     
+     
+    <script>
+        // 设置默认日期为今天      
+        document.getElementById('startDate').valueAsDate = new Date();
+
+        // 设置默认日期为x天后       
+        var today = new Date();
+        today.setDate(today.getDate() + 15);
+        document.getElementById('endDate').valueAsDate = today;
+        
+
+
+
+        function DateDifference() {
+            var selectedDate = new Date(document.getElementById('startDate').value);
+            var endDate = new Date(document.getElementById('endDate').value);
+
+            // 计算两个日期之间的差异（以毫秒为单位）
+            var timeDiff = endDate.getTime() - selectedDate.getTime();
+
+            // 将时间差异转换为天数
+            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            // 显示相距天数
+            document.getElementById('resultApart').textContent = '日期相距天数：' + daysDiff;
+        }
+
+
+
+
+        // 清除所有结果文本
+        function clearResults() {
+            ['result', 'result75', 'result90', 'resultApart','tiptext'].forEach(function (id) {
+                document.getElementById(id).innerHTML = '';
+            });
+            document.getElementById('days').value = '';
+
+        }
+    </script>
+
+      <script type="text/javascript" src="js/so.js"></script>
+
+      <footer class="docs-footer container grid-lg" id="footer"></footer>
+
+    </div>
+
+
+  </div>
+  
+</body>
+
+</html>
