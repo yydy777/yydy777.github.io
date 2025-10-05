@@ -1,174 +1,169 @@
-{
-  "title": "",
-  "type": "folder",
-  "addDate": 1759635753251,
-  "children": [
-    {
-      "title": "书签栏",
-      "type": "folder",
-      "addDate": 1724609612620,
-      "children": [
-        {
-          "title": "Experiments",
-          "type": "link",
-          "addDate": 1759652887275,
-          "url": "chrome://flags/",
-          "icon": "https://www.google.com/s2/favicons?domain=flags"
-        },
-        {
-          "title": "扩展程序",
-          "type": "link",
-          "addDate": 1759652887275,
-          "url": "chrome://extensions/",
-          "icon": "https://www.google.com/s2/favicons?domain=extensions"
-        },
-        {
-          "title": "设置",
-          "type": "link",
-          "addDate": 1759652887275,
-          "url": "chrome://settings/help",
-          "icon": "https://www.google.com/s2/favicons?domain=settings"
-        },
-        {
-          "title": "版本",
-          "type": "link",
-          "addDate": 1759652887276,
-          "url": "chrome://version/",
-          "icon": "https://www.google.com/s2/favicons?domain=version"
-        },
-        {
-          "title": "ip",
-          "type": "folder",
-          "addDate": 1759652887276,
-          "children": [
-            {
-              "title": "BLip",
-              "type": "link",
-              "addDate": 1759652887280,
-              "url": "https://browserleaks.com/ip",
-              "icon": "https://www.google.com/s2/favicons?domain=browserleaks.com"
-            },
-            {
-              "title": "ip233",
-              "type": "link",
-              "addDate": 1759652887280,
-              "url": "https://ip233.cn/",
-              "icon": "https://www.google.com/s2/favicons?domain=ip233.cn"
-            },
-            {
-              "title": "ip111",
-              "type": "link",
-              "addDate": 1759652887280,
-              "url": "http://ip111.cn/",
-              "icon": "https://www.google.com/s2/favicons?domain=ip111.cn"
-            }
-          ]
-        },
-        {
-          "title": "扩展",
-          "type": "folder",
-          "addDate": 1759652887276,
-          "children": [
-            {
-              "title": "Crx搜",
-              "type": "link",
-              "addDate": 1759652887281,
-              "url": "https://www.crxsoso.com/",
-              "icon": "https://www.google.com/s2/favicons?domain=www.crxsoso.com"
-            },
-            {
-              "title": "Crx4",
-              "type": "link",
-              "addDate": 1759652887281,
-              "url": "https://www.crx4chrome.com/",
-              "icon": "https://www.google.com/s2/favicons?domain=www.crx4chrome.com"
-            },
-            {
-              "title": "油小猴",
-              "type": "link",
-              "addDate": 1759652887281,
-              "url": "https://www.youxiaohou.com/",
-              "icon": "https://www.google.com/s2/favicons?domain=www.youxiaohou.com"
-            }
-          ]
-        },
-        {
-          "title": "小刀",
-          "type": "link",
-          "addDate": 1759652887277,
-          "url": "https://www.x6g.com/",
-          "icon": "https://www.google.com/s2/favicons?domain=www.x6g.com"
-        },
-        {
-          "title": "必应",
-          "type": "link",
-          "addDate": 1759652887277,
-          "url": "https://cn.bing.com/",
-          "icon": "https://www.google.com/s2/favicons?domain=cn.bing.com"
-        },
-        {
-          "title": "Rewards",
-          "type": "link",
-          "addDate": 1759652887277,
-          "url": "https://rewards.bing.com/pointsbreakdown",
-          "icon": "https://www.google.com/s2/favicons?domain=rewards.bing.com"
-        },
-        {
-          "title": "google",
-          "type": "link",
-          "addDate": 1759652887277,
-          "url": "https://www.google.com/",
-          "icon": "https://www.google.com/s2/favicons?domain=www.google.com"
-        },
-        {
-          "title": "google翻译",
-          "type": "link",
-          "addDate": 1759652887278,
-          "url": "https://translate.google.com/?hl=zh-cn",
-          "icon": "https://www.google.com/s2/favicons?domain=translate.google.com"
-        },
-        {
-          "title": "greasyfork",
-          "type": "link",
-          "addDate": 1759652887278,
-          "url": "https://greasyfork.org/zh-CN",
-          "icon": "https://www.google.com/s2/favicons?domain=greasyfork.org"
-        },
-        {
-          "title": "课评豆包",
-          "type": "link",
-          "addDate": 1759652887278,
-          "url": "https://www.doubao.com/chat/1866298107611906",
-          "icon": "https://www.google.com/s2/favicons?domain=www.doubao.com"
-        },
-        {
-          "title": "百度网盘",
-          "type": "link",
-          "addDate": 1759652887279,
-          "url": "https://pan.baidu.com/disk/main?from=1026962h#/index?category=all",
-          "icon": "https://www.google.com/s2/favicons?domain=pan.baidu.com"
-        },
-        {
-          "title": "Edge  666",
-          "type": "link",
-          "addDate": 1759652887279,
-          "url": "https://aichunjing.lanzouy.com/b0cxwsv5c",
-          "icon": "https://www.google.com/s2/favicons?domain=aichunjing.lanzouy.com"
-        },
-        {
-          "title": "历史版本Edge／Chrome／360Browser",
-          "type": "link",
-          "addDate": 1759652887279,
-          "url": "https://423down.lanzouo.com/b0f2ltghg",
-          "icon": "https://www.google.com/s2/favicons?domain=423down.lanzouo.com"
-        }
-      ]
-    },
-    {
-      "title": "其他书签",
-      "type": "folder",
-      "addDate": 1724609612620,
-      "children": []
-    }
-  ]
-}
+[
+  {
+    "type": "folder",
+    "addDate": 1724609612620,
+    "title": "书签栏",
+    "children": [
+      {
+        "type": "link",
+        "addDate": 1759652887275,
+        "title": "Experiments",
+        "url": "chrome://flags/",
+        "icon": "https://logo.clearbit.com/flags"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887275,
+        "title": "扩展程序",
+        "url": "chrome://extensions/",
+        "icon": "https://logo.clearbit.com/extensions"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887275,
+        "title": "设置",
+        "url": "chrome://settings/help",
+        "icon": "https://logo.clearbit.com/settings"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887276,
+        "title": "版本",
+        "url": "chrome://version/",
+        "icon": "https://logo.clearbit.com/version"
+      },
+      {
+        "type": "folder",
+        "addDate": 1759652887276,
+        "title": "ip",
+        "children": [
+          {
+            "type": "link",
+            "addDate": 1759652887280,
+            "title": "BLip",
+            "url": "https://browserleaks.com/ip",
+            "icon": "https://logo.clearbit.com/browserleaks.com"
+          },
+          {
+            "type": "link",
+            "addDate": 1759652887280,
+            "title": "ip233",
+            "url": "https://ip233.cn/",
+            "icon": "https://logo.clearbit.com/ip233.cn"
+          },
+          {
+            "type": "link",
+            "addDate": 1759652887280,
+            "title": "ip111",
+            "url": "http://ip111.cn/",
+            "icon": "https://logo.clearbit.com/ip111.cn"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "addDate": 1759652887276,
+        "title": "扩展",
+        "children": [
+          {
+            "type": "link",
+            "addDate": 1759652887281,
+            "title": "Crx搜",
+            "url": "https://www.crxsoso.com/",
+            "icon": "https://logo.clearbit.com/www.crxsoso.com"
+          },
+          {
+            "type": "link",
+            "addDate": 1759652887281,
+            "title": "Crx4",
+            "url": "https://www.crx4chrome.com/",
+            "icon": "https://logo.clearbit.com/www.crx4chrome.com"
+          },
+          {
+            "type": "link",
+            "addDate": 1759652887281,
+            "title": "油小猴",
+            "url": "https://www.youxiaohou.com/",
+            "icon": "https://logo.clearbit.com/www.youxiaohou.com"
+          }
+        ]
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887277,
+        "title": "小刀",
+        "url": "https://www.x6g.com/",
+        "icon": "https://logo.clearbit.com/www.x6g.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887277,
+        "title": "必应",
+        "url": "https://cn.bing.com/",
+        "icon": "https://logo.clearbit.com/cn.bing.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887277,
+        "title": "Rewards",
+        "url": "https://rewards.bing.com/pointsbreakdown",
+        "icon": "https://logo.clearbit.com/rewards.bing.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887277,
+        "title": "google",
+        "url": "https://www.google.com/",
+        "icon": "https://logo.clearbit.com/www.google.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887278,
+        "title": "google翻译",
+        "url": "https://translate.google.com/?hl=zh-cn",
+        "icon": "https://logo.clearbit.com/translate.google.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887278,
+        "title": "greasyfork",
+        "url": "https://greasyfork.org/zh-CN",
+        "icon": "https://logo.clearbit.com/greasyfork.org"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887278,
+        "title": "课评豆包",
+        "url": "https://www.doubao.com/chat/1866298107611906",
+        "icon": "https://logo.clearbit.com/www.doubao.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887279,
+        "title": "百度网盘",
+        "url": "https://pan.baidu.com/disk/main?from=1026962h#/index?category=all",
+        "icon": "https://logo.clearbit.com/pan.baidu.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887279,
+        "title": "Edge  666",
+        "url": "https://aichunjing.lanzouy.com/b0cxwsv5c",
+        "icon": "https://logo.clearbit.com/aichunjing.lanzouy.com"
+      },
+      {
+        "type": "link",
+        "addDate": 1759652887279,
+        "title": "历史版本Edge／Chrome／360Browser",
+        "url": "https://423down.lanzouo.com/b0f2ltghg",
+        "icon": "https://logo.clearbit.com/423down.lanzouo.com"
+      }
+    ]
+  },
+  {
+    "type": "folder",
+    "addDate": 1724609612620,
+    "title": "其他书签",
+    "children": []
+  }
+]
