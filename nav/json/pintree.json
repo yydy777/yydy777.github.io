@@ -80,6 +80,20 @@
             "icon": "https://logo.clearbit.com/www.crx4chrome.com"
           },
           {
+            "type": "folder",
+            "addDate": 1759654493160,
+            "title": "新建文件夹",
+            "children": [
+              {
+                "type": "link",
+                "addDate": 1759654497503,
+                "title": "Pintree Bookmarks Exporter | Chrome扩展 - Crx搜搜",
+                "url": "https://www.crxsoso.com/webstore/detail/mjcglnkikjidokobpfdcdmcnfdicojce",
+                "icon": "https://logo.clearbit.com/www.crxsoso.com"
+              }
+            ]
+          },
+          {
             "type": "link",
             "addDate": 1759654427413,
             "title": "油小猴",
