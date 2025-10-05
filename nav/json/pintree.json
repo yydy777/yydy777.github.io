@@ -1,184 +1,154 @@
 [
   {
-    "id": "0",
-    "parentId": "0",
     "title": "",
-    "dateAdded": 1759635753251,
-    "dateGroupModified": 1759653333503,
+    "addDate": 1759635753251,
+    "type": "folder",
     "children": [
       {
-        "id": "1",
-        "parentId": "0",
         "title": "书签栏",
-        "dateAdded": 1724609612620,
-        "dateGroupModified": 1759652887279,
+        "addDate": 1724609612620,
+        "type": "folder",
         "children": [
           {
-            "id": "142",
-            "parentId": "1",
             "title": "Experiments",
-            "dateAdded": 1759652887275,
+            "addDate": 1759652887275,
+            "type": "link",
             "url": "chrome://flags/"
           },
           {
-            "id": "143",
-            "parentId": "1",
             "title": "扩展程序",
-            "dateAdded": 1759652887275,
+            "addDate": 1759652887275,
+            "type": "link",
             "url": "chrome://extensions/"
           },
           {
-            "id": "144",
-            "parentId": "1",
             "title": "设置",
-            "dateAdded": 1759652887275,
+            "addDate": 1759652887275,
+            "type": "link",
             "url": "chrome://settings/help"
           },
           {
-            "id": "145",
-            "parentId": "1",
             "title": "版本",
-            "dateAdded": 1759652887276,
+            "addDate": 1759652887276,
+            "type": "link",
             "url": "chrome://version/"
           },
           {
-            "id": "146",
-            "parentId": "1",
             "title": "ip",
-            "dateAdded": 1759652887276,
-            "dateGroupModified": 1759652887280,
+            "addDate": 1759652887276,
+            "type": "folder",
             "children": [
               {
-                "id": "158",
-                "parentId": "146",
                 "title": "BLip",
-                "dateAdded": 1759652887280,
+                "addDate": 1759652887280,
+                "type": "link",
                 "url": "https://browserleaks.com/ip"
               },
               {
-                "id": "159",
-                "parentId": "146",
                 "title": "ip233",
-                "dateAdded": 1759652887280,
+                "addDate": 1759652887280,
+                "type": "link",
                 "url": "https://ip233.cn/"
               },
               {
-                "id": "160",
-                "parentId": "146",
                 "title": "ip111",
-                "dateAdded": 1759652887280,
+                "addDate": 1759652887280,
+                "type": "link",
                 "url": "http://ip111.cn/"
               }
             ]
           },
           {
-            "id": "147",
-            "parentId": "1",
             "title": "扩展",
-            "dateAdded": 1759652887276,
-            "dateGroupModified": 1759652887281,
+            "addDate": 1759652887276,
+            "type": "folder",
             "children": [
               {
-                "id": "161",
-                "parentId": "147",
                 "title": "Crx搜",
-                "dateAdded": 1759652887281,
+                "addDate": 1759652887281,
+                "type": "link",
                 "url": "https://www.crxsoso.com/"
               },
               {
-                "id": "162",
-                "parentId": "147",
                 "title": "Crx4",
-                "dateAdded": 1759652887281,
+                "addDate": 1759652887281,
+                "type": "link",
                 "url": "https://www.crx4chrome.com/"
               },
               {
-                "id": "163",
-                "parentId": "147",
                 "title": "油小猴",
-                "dateAdded": 1759652887281,
+                "addDate": 1759652887281,
+                "type": "link",
                 "url": "https://www.youxiaohou.com/"
               }
             ]
           },
           {
-            "id": "148",
-            "parentId": "1",
             "title": "小刀",
-            "dateAdded": 1759652887277,
+            "addDate": 1759652887277,
+            "type": "link",
             "url": "https://www.x6g.com/"
           },
           {
-            "id": "149",
-            "parentId": "1",
             "title": "必应",
-            "dateAdded": 1759652887277,
+            "addDate": 1759652887277,
+            "type": "link",
             "url": "https://cn.bing.com/"
           },
           {
-            "id": "150",
-            "parentId": "1",
             "title": "Rewards",
-            "dateAdded": 1759652887277,
+            "addDate": 1759652887277,
+            "type": "link",
             "url": "https://rewards.bing.com/pointsbreakdown"
           },
           {
-            "id": "151",
-            "parentId": "1",
             "title": "google",
-            "dateAdded": 1759652887277,
+            "addDate": 1759652887277,
+            "type": "link",
             "url": "https://www.google.com/"
           },
           {
-            "id": "152",
-            "parentId": "1",
             "title": "google翻译",
-            "dateAdded": 1759652887278,
+            "addDate": 1759652887278,
+            "type": "link",
             "url": "https://translate.google.com/?hl=zh-cn"
           },
           {
-            "id": "153",
-            "parentId": "1",
             "title": "greasyfork",
-            "dateAdded": 1759652887278,
+            "addDate": 1759652887278,
+            "type": "link",
             "url": "https://greasyfork.org/zh-CN"
           },
           {
-            "id": "154",
-            "parentId": "1",
             "title": "课评豆包",
-            "dateAdded": 1759652887278,
+            "addDate": 1759652887278,
+            "type": "link",
             "url": "https://www.doubao.com/chat/1866298107611906"
           },
           {
-            "id": "155",
-            "parentId": "1",
             "title": "百度网盘",
-            "dateAdded": 1759652887279,
+            "addDate": 1759652887279,
+            "type": "link",
             "url": "https://pan.baidu.com/disk/main?from=1026962h#/index?category=all"
           },
           {
-            "id": "156",
-            "parentId": "1",
             "title": "Edge  666",
-            "dateAdded": 1759652887279,
+            "addDate": 1759652887279,
+            "type": "link",
             "url": "https://aichunjing.lanzouy.com/b0cxwsv5c"
           },
           {
-            "id": "157",
-            "parentId": "1",
             "title": "历史版本Edge／Chrome／360Browser",
-            "dateAdded": 1759652887279,
+            "addDate": 1759652887279,
+            "type": "link",
             "url": "https://423down.lanzouo.com/b0f2ltghg"
           }
         ]
       },
       {
-        "id": "2",
-        "parentId": "0",
         "title": "其他书签",
-        "dateAdded": 1724609612620,
-        "dateGroupModified": 1724609863230,
+        "addDate": 1724609612620,
+        "type": "folder",
         "children": []
       }
     ]
