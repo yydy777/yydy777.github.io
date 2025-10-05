@@ -337,21 +337,47 @@
       
       card.onclick = () => {
           if (isRestricted) {
-              // 如果是受限协议，则复制链接到剪贴板
               navigator.clipboard.writeText(url).then(() => {
-                  // 复制成功后，可以显示一个提示（例如使用一个短暂出现的 Toast 消息）
-                  // 这里简单地使用 alert 或 console.log 作为示例
-                  alert(`链接已复制到剪贴板:\n${url}`);
-                  // 或者使用更美观的提示方式，例如创建一个临时的 div 显示 "Copied!"
+                  // 显示简洁的悬浮提示
+                  showToast("已复制");
               }).catch(err => {
-                  console.error('复制链接失败:', err);
-                  alert('复制链接失败，请手动复制。');
+                  console.error('复制失败:', err);
+                  showToast("复制失败", true);
               });
           } else {
-              // 否则，正常打开链接
               window.open(url, '_blank');
           }
       };
+
+      // 悬浮提示
+      function showToast(msg, error = false) {
+          const toast = document.createElement('div');
+          Object.assign(toast.style, {
+              position: 'fixed', top: '20px', left: '50%',
+              transform: 'translate(-50%, -100%)',
+              background: error ? '#c33' : '#4c9', color: 'white',
+              padding: '8px 16px', borderRadius: '4px',
+              fontSize: '14px', opacity: '0',
+              transition: 'all 0.3s', zIndex: '1000',
+              pointerEvents: 'none'
+          });
+          toast.textContent = msg;
+          document.body.appendChild(toast);
+      
+          // 触发动画
+          requestAnimationFrame(() => {
+              toast.style.opacity = '1';
+              toast.style.transform = 'translate(-50%, 0)';
+          });
+      
+          // 1.5秒后移除
+          setTimeout(() => {
+              toast.style.opacity = '0';
+              toast.style.transform = 'translate(-50%, -100%)';
+              setTimeout(() => document.body.removeChild(toast), 300);
+          }, 1500);
+      }
+      
       // --- 新增逻辑结束 ---
         
       const cardIcon = document.createElement('img');
