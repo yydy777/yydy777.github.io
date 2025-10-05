@@ -18,14 +18,14 @@
     padding: 4px 0 !important;      /* 内边距，避免紧贴 */
   }
 
-  /* 可选：美化滚动条（确保在所有浏览器生效） */
-#breadcrumbs-path::-webkit-scrollbar {
-  top: 2px;
-  height: 4px; /* 横向滚动条高度 */
-}
-
-  #breadcrumbs-path::-webkit-scrollbar-thumb { background: #ccc !important; border-radius: 2px !important; }
-  #breadcrumbs-path::-webkit-scrollbar-track { background: transparent !important; }
+      /* 可选：美化滚动条（确保在所有浏览器生效） */
+    #breadcrumbs-path::-webkit-scrollbar {
+      top: 2px;
+      height: 4px; /* 横向滚动条高度 */
+    }
+    
+    #breadcrumbs-path::-webkit-scrollbar-thumb { background: #ccc !important; border-radius: 2px !important; }
+    #breadcrumbs-path::-webkit-scrollbar-track { background: transparent !important; }
 
 .text-main-500{
   --tw-text-opacity: 1;
