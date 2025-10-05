@@ -9,23 +9,26 @@
     border-radius: 30px;
 }
 
-  /* 高优先级选择器：ID选择器+!important，强制覆盖默认样式 */
-  #breadcrumbs-path {
-    white-space: nowrap !important; /* 禁止文字换行拆分 */
-    overflow-x: auto !important;    /* 横向超出时显示滚动条 */
-    overflow-y: hidden !important;   /* 隐藏纵向滚动条 */
-    max-height: 30px !important;    /* 固定高度，防止重叠 */
-    padding: 4px 0 !important;      /* 内边距，避免紧贴 */
-  }
+#breadcrumbs-path {
+    white-space: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    max-height: 50px !important;
+    padding: 8px 0 !important;
+}
 
-      /* 可选：美化滚动条（确保在所有浏览器生效） */
-    #breadcrumbs-path::-webkit-scrollbar {
-      top: 2px;
-      height: 4px; /* 横向滚动条高度 */
-    }
-    
-    #breadcrumbs-path::-webkit-scrollbar-thumb { background: #ccc !important; border-radius: 2px !important; }
-    #breadcrumbs-path::-webkit-scrollbar-track { background: transparent !important; }
+
+/* 可选：美化横向滚动条（避免默认滚动条过宽） */
+#breadcrumbs-path::-webkit-scrollbar {
+  height: 4px; /* 横向滚动条高度 */
+}
+#breadcrumbs-path::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* 滚动条滑块颜色 */
+  border-radius: 2px; /* 滑块圆角 */
+}
+#breadcrumbs-path::-webkit-scrollbar-track {
+  background-color: transparent; /* 滚动条轨道透明 */
+}
 
 .text-main-500{
   --tw-text-opacity: 1;
