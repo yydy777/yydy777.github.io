@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.bg-yydy{
+    background-color: rgba(156, 163, 175, 0.5);
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 30px;
+}
+
 .text-main-500{
   --tw-text-opacity: 1;
   color: rgba(11, 166, 101, var(--tw-text-opacity)) 
