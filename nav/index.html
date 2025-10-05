@@ -329,8 +329,31 @@
     function createCard(title, url, icon) {
       const card = document.createElement('div');
       card.className = 'cursor-pointer flex items-center hover:shadow-sm transition-shadow p-4 bg-white shadow-sm ring-1 ring-gray-900/5 dark:pintree-ring-gray-800 rounded-lg hover:bg-gray-100 dark:pintree-bg-gray-900 dark:hover:pintree-bg-gray-800';
-      card.onclick = () => window.open(url, '_blank'); // Make the whole card clickable
-
+      // card.onclick = () => window.open(url, '_blank'); // Make the whole card clickable
+      
+      // --- 新增逻辑：检查协议并设置点击行为 ---
+      const restrictedProtocols = ['chrome://', 'edge://', 'about:', 'file://'];
+      const isRestricted = restrictedProtocols.some(protocol => url.startsWith(protocol));
+      
+      card.onclick = () => {
+          if (isRestricted) {
+              // 如果是受限协议，则复制链接到剪贴板
+              navigator.clipboard.writeText(url).then(() => {
+                  // 复制成功后，可以显示一个提示（例如使用一个短暂出现的 Toast 消息）
+                  // 这里简单地使用 alert 或 console.log 作为示例
+                  alert(`链接已复制到剪贴板:\n${url}`);
+                  // 或者使用更美观的提示方式，例如创建一个临时的 div 显示 "Copied!"
+              }).catch(err => {
+                  console.error('复制链接失败:', err);
+                  alert('复制链接失败，请手动复制。');
+              });
+          } else {
+              // 否则，正常打开链接
+              window.open(url, '_blank');
+          }
+      };
+      // --- 新增逻辑结束 ---
+        
       const cardIcon = document.createElement('img');
       cardIcon.src = icon || 'assets/default-icon.svg'; // Use provided icon or default icon
       cardIcon.alt = title;
