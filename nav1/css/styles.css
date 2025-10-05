@@ -10,6 +10,34 @@
     border-radius: 30px;
 }
 
+/* 修复面包屑换行断开与重叠问题 */
+#breadcrumbs-path {
+  /* 1. 强制文字不拆分（关键：避免单个文字换行到第二行） */
+  white-space: nowrap; 
+  /* 2. 超出容器宽度时显示横向滚动条（不影响垂直布局） */
+  overflow-x: auto; 
+  /* 3. 隐藏纵向滚动条（防止意外出现） */
+  overflow-y: hidden; 
+  /* 4. 增加内边距，避免文字与容器边缘紧贴 */
+  padding: 4px 0; 
+  /* 5. 限制高度，防止滚动条与其他元素重叠 */
+  max-height: 30px; 
+  /* 6. 优化滚动体验（可选：平滑滚动） */
+  scroll-behavior: smooth;
+}
+
+/* 可选：美化横向滚动条（避免默认滚动条过宽） */
+#breadcrumbs-path::-webkit-scrollbar {
+  height: 4px; /* 横向滚动条高度 */
+}
+#breadcrumbs-path::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* 滚动条滑块颜色 */
+  border-radius: 2px; /* 滑块圆角 */
+}
+#breadcrumbs-path::-webkit-scrollbar-track {
+  background-color: transparent; /* 滚动条轨道透明 */
+}
+
 .text-main-500{
   --tw-text-opacity: 1;
   color: rgba(11, 166, 101, var(--tw-text-opacity)) 
