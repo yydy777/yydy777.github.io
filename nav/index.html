@@ -349,35 +349,42 @@
           }
       };
 
-      // 悬浮提示
+
+      // 悬浮提示(底部居中)
       function showToast(msg, error = false) {
           const toast = document.createElement('div');
           Object.assign(toast.style, {
-              position: 'fixed', top: '20px', left: '50%',
-              transform: 'translate(-50%, -100%)',
-              background: error ? '#c33' : '#4c9', color: 'white',
-              padding: '8px 16px', borderRadius: '4px',
-              fontSize: '14px', opacity: '0',
-              transition: 'all 0.3s', zIndex: '1000',
+              position: 'fixed', 
+              bottom: '20px',  // 改为底部
+              left: '50%', 
+              transform: 'translate(-50%, 100%)', // 改为向下偏移
+              background: error ? '#c33' : '#4c9', 
+              color: 'white',
+              padding: '8px 16px', 
+              borderRadius: '4px',
+              fontSize: '14px', 
+              opacity: '0',
+              transition: 'all 0.3s', 
+              zIndex: '1000',
               pointerEvents: 'none'
           });
           toast.textContent = msg;
           document.body.appendChild(toast);
-      
-          // 触发动画
+  
+          // 触发动画 (淡入并上滑)
           requestAnimationFrame(() => {
               toast.style.opacity = '1';
-              toast.style.transform = 'translate(-50%, 0)';
+              toast.style.transform = 'translate(-50%, 0)'; // 移动到最终位置
           });
-      
+  
           // 1.5秒后移除
           setTimeout(() => {
               toast.style.opacity = '0';
-              toast.style.transform = 'translate(-50%, -100%)';
+              toast.style.transform = 'translate(-50%, 100%)'; // 滑出到底部
               setTimeout(() => document.body.removeChild(toast), 300);
           }, 1500);
       }
-      
+
       // --- 新增逻辑结束 ---
         
       const cardIcon = document.createElement('img');
