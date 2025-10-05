@@ -1,0 +1,208 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "dateAdded": 1759490930504,
+            "id": "21",
+            "index": 0,
+            "parentId": "1",
+            "title": "Experiments",
+            "url": "chrome://flags/"
+          },
+          {
+            "dateAdded": 1759490930504,
+            "id": "22",
+            "index": 1,
+            "parentId": "1",
+            "title": "扩展程序",
+            "url": "chrome://extensions/"
+          },
+          {
+            "dateAdded": 1759490930505,
+            "id": "23",
+            "index": 2,
+            "parentId": "1",
+            "title": "设置",
+            "url": "chrome://settings/help"
+          },
+          {
+            "dateAdded": 1759490930506,
+            "id": "24",
+            "index": 3,
+            "parentId": "1",
+            "title": "版本",
+            "url": "chrome://version/"
+          },
+          {
+            "children": [
+              {
+                "dateAdded": 1759490930508,
+                "id": "26",
+                "index": 0,
+                "parentId": "25",
+                "title": "BLip",
+                "url": "https://browserleaks.com/ip"
+              },
+              {
+                "dateAdded": 1759490930508,
+                "id": "27",
+                "index": 1,
+                "parentId": "25",
+                "title": "ip233",
+                "url": "https://ip233.cn/"
+              },
+              {
+                "dateAdded": 1759490930508,
+                "id": "28",
+                "index": 2,
+                "parentId": "25",
+                "title": "ip111",
+                "url": "http://ip111.cn/"
+              }
+            ],
+            "dateAdded": 1759490930507,
+            "dateGroupModified": 1759490930508,
+            "id": "25",
+            "index": 4,
+            "parentId": "1",
+            "title": "ip"
+          },
+          {
+            "children": [
+              {
+                "dateAdded": 1759490930511,
+                "id": "30",
+                "index": 0,
+                "parentId": "29",
+                "title": "Crx搜",
+                "url": "https://www.crxsoso.com/"
+              },
+              {
+                "dateAdded": 1759490930511,
+                "id": "31",
+                "index": 1,
+                "parentId": "29",
+                "title": "Crx4",
+                "url": "https://www.crx4chrome.com/"
+              },
+              {
+                "dateAdded": 1759490930512,
+                "id": "32",
+                "index": 2,
+                "parentId": "29",
+                "title": "油小猴",
+                "url": "https://www.youxiaohou.com/"
+              }
+            ],
+            "dateAdded": 1759490930510,
+            "dateGroupModified": 1759490930512,
+            "id": "29",
+            "index": 5,
+            "parentId": "1",
+            "title": "扩展"
+          },
+          {
+            "dateAdded": 1759490930512,
+            "id": "33",
+            "index": 6,
+            "parentId": "1",
+            "title": "小刀",
+            "url": "https://www.x6g.com/"
+          },
+          {
+            "dateAdded": 1759490930513,
+            "id": "34",
+            "index": 7,
+            "parentId": "1",
+            "title": "必应",
+            "url": "https://cn.bing.com/"
+          },
+          {
+            "dateAdded": 1759490930514,
+            "id": "35",
+            "index": 8,
+            "parentId": "1",
+            "title": "Rewards",
+            "url": "https://rewards.bing.com/pointsbreakdown"
+          },
+          {
+            "dateAdded": 1759490930514,
+            "id": "36",
+            "index": 9,
+            "parentId": "1",
+            "title": "google",
+            "url": "https://www.google.com/"
+          },
+          {
+            "dateAdded": 1759490930515,
+            "id": "37",
+            "index": 10,
+            "parentId": "1",
+            "title": "google翻译",
+            "url": "https://translate.google.com/?hl=zh-cn"
+          },
+          {
+            "dateAdded": 1759490930515,
+            "id": "38",
+            "index": 11,
+            "parentId": "1",
+            "title": "greasyfork",
+            "url": "https://greasyfork.org/zh-CN"
+          },
+          {
+            "dateAdded": 1759490930516,
+            "id": "39",
+            "index": 12,
+            "parentId": "1",
+            "title": "课评豆包",
+            "url": "https://www.doubao.com/chat/1866298107611906"
+          },
+          {
+            "dateAdded": 1759490930516,
+            "id": "40",
+            "index": 13,
+            "parentId": "1",
+            "title": "百度网盘",
+            "url": "https://pan.baidu.com/disk/main?from=1026962h#/index?category=all"
+          },
+          {
+            "dateAdded": 1759490930517,
+            "id": "41",
+            "index": 14,
+            "parentId": "1",
+            "title": "Edge  666",
+            "url": "https://aichunjing.lanzouy.com/b0cxwsv5c"
+          },
+          {
+            "dateAdded": 1759490930518,
+            "id": "42",
+            "index": 15,
+            "parentId": "1",
+            "title": "历史版本Edge／Chrome／360Browser",
+            "url": "https://423down.lanzouo.com/b0f2ltghg"
+          }
+        ],
+        "dateAdded": 1724609612620,
+        "dateGroupModified": 1759490930518,
+        "id": "1",
+        "index": 0,
+        "parentId": "0",
+        "title": "书签栏"
+      },
+      {
+        "children": [],
+        "dateAdded": 1724609612620,
+        "dateGroupModified": 1724609863230,
+        "id": "2",
+        "index": 1,
+        "parentId": "0",
+        "title": "其他书签"
+      }
+    ],
+    "dateAdded": 1759635753251,
+    "id": "0",
+    "title": ""
+  }
+]
