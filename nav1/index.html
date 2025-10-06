@@ -745,7 +745,7 @@
                 // 渲染链接
                 if (links.length > 0) {
                     const linkSection = document.createElement('div');
-                    linkSection.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6';
+                    linkSection.className = 'grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6';
                     links.forEach(link => linkSection.appendChild(createCard(link.title, link.url, link.icon)));
                     container.appendChild(linkSection);
                 }
