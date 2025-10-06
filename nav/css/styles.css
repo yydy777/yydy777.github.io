@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .bg-yydy{
     background-color: rgba(156, 163, 175, 0.5);
     color: #fff;
@@ -9,12 +10,18 @@
     border-radius: 30px;
 }
 
+.top-63 {
+    top: 63px;
+    background: #fff;
+    
+}
+
 #breadcrumbs-path {
     white-space: nowrap !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     max-height: 50px !important;
-    padding: 8px 0 !important;
+    padding: 16px 0 8px 0 !important;
 }
 
 
@@ -29,6 +36,7 @@
 #breadcrumbs-path::-webkit-scrollbar-track {
   background-color: transparent; /* 滚动条轨道透明 */
 }
+
 
 .text-main-500{
   --tw-text-opacity: 1;
