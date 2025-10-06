@@ -1,55 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="h-full dark:pintree-bg-gray-900 bg-white">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YYDY777</title>
     <meta name="keywords" content="YYDY777, Bookmarks, Link Management, Export Bookmarks, Website Bookmarks">
-    <meta name="description" content="YYDY777 is a powerful tool that helps you manage and export your browser bookmarks, converting them into an aesthetically pleasing website that is easy to share and access.">
+    <meta name="description" content="YYDY777">
     <meta name="author" content="YYDY777">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.pintree.io">
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="60283522-e543-4dcb-bd47-e855f1e0a635"></script>
-    <script defer data-domain="pintree.io" src="https://plausible.io/js/script.js"></script>
-    <script type="text/javascript">
-        (function(c, l, a, r, i, t, y) {
-            c[a] = c[a] || function() {
-                (c[a].q = c[a].q || []).push(arguments)
-            };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "n75ecz0sud");
-    </script>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P1JF3QTQ79"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-P1JF3QTQ79');
-    </script>
-
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://www.pintree.io">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="YYDY777">
-    <meta property="og:description" content="Managing and Exporting your Bookmarks into a Website">
-    <meta property="og:image" content="https://app.pintree.io/assets/og.png">
-
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="Pintree.io">
-    <meta property="twitter:url" content="https://www.pintree.io">
-    <meta name="twitter:title" content="Pintree">
-    <meta name="twitter:description" content="Managing and Exporting your Bookmarks into a Website">
-    <meta name="twitter:image" content="https://app.pintree.io/assets/og.png">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
@@ -60,64 +18,188 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/tailwind.css">
     <link rel="stylesheet" href="css/styles.css">
+    <style>
 
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "url": "https://www.pintree.io",
-            "name": "Pintree",
-            "description": "Managing and Exporting your Bookmarks into a Website",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://www.pintree.io/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
+        
+        /* 搜索图标和清除按钮样式 */
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        
+        .clear-search-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            display: none;
+        }
+        
+        .clear-search-btn.show {
+            display: block;
+        }
+
+        /* 侧边栏响应式调整 */
+        .sidebar-container {
+            transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 导航菜单样式 */
+        #navigation {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #navigation li {
+            position: relative;
+            display: block; /* 确保每个菜单项占满一行 */
+        }
+
+        /* 子菜单容器样式 */
+        #navigation li .submenu-container {
+            margin-left: 0.5rem;
+            margin-top: 0.25rem;
+            display: none;
+            border-left: 2px solid rgba(60, 184, 132, 0.3);
+        }
+
+        #navigation li .submenu-container.active {
+            display: block; /* 激活时显示 */
+        }
+
+        /* 移除可能导致水平布局的样式 */
+        #navigation li .submenu-container ul {
+            display: block;
+            width: 100%;
+        }
+
+        /* 面包屑样式 */
+        #breadcrumbs {
+            border-width: 1px 0;
+            border-style: solid;
+            border-color: rgb(17 24 39 / 0.1);
+        }
+
+        .dark #breadcrumbs {
+            border-color: rgba(156, 163, 175, 0.2);
+        }
+        
+        #search-input {
+            left: -2rem;
+        }
+        
+        /* 移动端样式 */
+        @media (max-width: 1023px) {
+            #pcSearchInput {
+                width: 80%;
+            }
+            #search-input {
+                left: 0rem;
+            }
+
+            .sidebar-container {
+                position: fixed;
+                z-index: 50;
+                height: 100vh; /* 限制高度为屏幕高度 */
+                width: 85%;
+                max-width: 300px;
+                transform: translateX(-100%);
+                display: block !important;
+                overflow-y: auto; /* 仅允许垂直滚动 */
+                overflow-x: hidden; /* 禁止水平滚动 */
+                -webkit-overflow-scrolling: touch; /* 平滑滚动 */
+                box-sizing: border-box;
+            }
+            
+            /* 确保所有子元素不超出容器宽度 */
+            .sidebar-container * {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* 导航文本过长时自动截断 */
+            #navigation a {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: calc(100% - 40px); /* 预留图标的空间 */
+                font-size: 15px;
+            }
+            
+            /* 固定头部 */
+            .sidebar-container .flex.p-0.h-16 {
+                width: 100%;
+                flex-shrink: 0;
+            }
+            
+            /* 可滚动内容区域 */
+            .sidebar-container .flex.flex-1.flex-col.overflow-y-auto {
+                flex: 1;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            
+            .sidebar-container.active {
+                transform: translateX(0);
+            }
+            
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+            }
+            
+            .sidebar-backdrop.active {
+                display: block;
+            }
+            
+            .main-content {
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            .main-content.sidebar-open {
+                transform: translateX(100%);
+            }
+            
+            /* 移动端菜单项增大点击区域 */
+            #navigation li {
+                padding: 0.5rem;
             }
         }
-    </script>
+    </style>
 </head>
 
 <body class="h-full dark:pintree-bg-gray-900 bg-white">
+    <!-- 侧边栏背景遮罩 -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
 
     <div>
-        <!-- Mobile Off-Canvas Menu -->
-        <div id="off-canvas-menu" class="relative z-50 lg:hidden hidden" role="dialog" aria-modal="true">
-            <div id="off-canvas-backdrop" class="fixed inset-0 bg-gray-900/80 opacity-0 transition-opacity ease-linear duration-300"></div>
-            <div class="fixed inset-0 flex">
-                <div id="off-canvas-content" class="relative mr-16 flex w-full max-w-xs flex-1 -translate-x-full transition ease-in-out duration-300 transform">
-                    <!-- Close button for the off-canvas menu -->
-                    <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                        <button id="close-sidebar-button" type="button" class="-m-2.5 p-2.5">
-              <span class="sr-only">Close sidebar</span>
-              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-                    </div>
-
-                    <!-- Off-canvas Sidebar content -->
-                    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:pintree-bg-gray-900 px-6 pb-4">
-                        <div class="flex h-16 shrink-0 items-center">
-                            <img class="pl-2 h-8 w-auto" src="assets/logo.svg" alt="Pintree">
-                            <a href="" class="ml-4 font-extrabold text-2xl dark:text-white">YYDY777</a>
-                        </div>
-                        <div id="sidebar-2" class="flex flex-1 flex-col">
-                            <!-- Sidebar content will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Static Sidebar for Desktop -->
-        <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-60 lg:flex-col">
+        <!-- 共用侧边栏（PC和移动端） -->
+        <div class="sidebar-container hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-60 lg:flex-col">
             <div class="flex flex-col border-r border-gray-200 dark:pintree-border-gray-800 bg-white px-4 h-full font-semibold dark:pintree-bg-gray-900">
-                <div class="flex p-0 h-16 shrink-0 items-center">
+                <!-- 固定头部 -->
+                <div class="flex p-0 h-16 shrink-0 items-center border-b border-gray-200 dark:border-gray-700">
                     <img class="pl-2 h-8 w-auto" src="assets/logo.svg" alt="Pintree">
                     <a href="" class="ml-4 font-extrabold text-2xl dark:text-white">YYDY777</a>
                 </div>
+                <!-- 可滚动内容区域 -->
                 <div class="flex flex-1 flex-col overflow-y-auto no-scrollbar p-1 cursor-pointer">
                     <div id="sidebar" class="flex flex-1 flex-col">
                         <ul id="navigation" class="space-y-1">
@@ -129,27 +211,37 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="lg:pl-60 dark:pintree-bg-gray-900 flex flex-col min-h-screen">
-            <!-- 顶部导航栏（含PC端隐藏的搜索框、移动端不显示） -->
-            <div class="items-center justify-between sticky top-0 z-40 flex h-16 shrink-0 gap-x-4  border-gray-200 dark:pintree-border-gray-800 bg-white dark:pintree-bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 pcSearchInput">
+        <div class="main-content lg:pl-60 dark:pintree-bg-gray-900 flex flex-col min-h-screen">
+            <!-- 顶部导航栏 -->
+            <div class="items-center justify-between sticky top-0 z-40 flex h-16 shrink-0 gap-x-4  border-gray-200 dark:pintree-border-gray-800 bg-white dark:pintree-bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
                 <div class="h-full items-center flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-between">
                     <div class="flex gap-x-4 justify-between">
-                        <img class="pl-2 h-8 w-auto lg:hidden" src="assets/logo.svg" alt="Pintree">
-                        <!-- PC端搜索框：仅lg及以上屏幕显示（原逻辑保留） -->
-                        <div class="hidden lg:flex relative w-72 h-full items-center justify-between ">
-                            <button id="pcSearchButton" class="absolute h-full text-gray-400 rounded">
-                <svg class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" viewBox="0 0 20 20"
-                  fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                    clip-rule="evenodd"></path>
-                </svg>
-              </button>
-                            <input id="pcSearchInput" type="search" class="text-sm text-gray-900 dark:text-gray-400 pl-8 h-full border-0 focus:outline-none focus:ring-0 dark:pintree-bg-gray-900" placeholder="Search...">
-                            <button id="pcClearSearchButton" class="text-sm text-gray-500 mr-4 rounded hidden">Clear</button>
+                        <button id="open-sidebar-button" type="button" class="lg:hidden -m-2.5 p-2.5">
+                            <span class="sr-only">Open sidebar</span>
+                            <svg class="h-6 w-6 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        </button>
+                        <a href="" class="flex items-center">
+                            <img id="headerlogo" class="w-auto lg:hidden" src="assets/logo.svg" alt="Pintree">
+                        </a>
+                        <!-- 搜索框 -->
+                        <div id="search-input" class="relative w-full lg:w-72 h-full items-center">
+                            <svg class="search-icon pointer-events-none h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                              fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd"
+                                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                clip-rule="evenodd"></path>
+                            </svg>
+                            <input id="pcSearchInput" type="search" class="text-sm text-gray-900 dark:text-gray-400 pr-8 h-full w-full border-0 focus:outline-none focus:ring-0 dark:pintree-bg-gray-900" placeholder="Search...">
+                            <button id="pcClearSearchButton" class="clear-search-btn text-sm text-gray-500 rounded">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    <a href="" class="lg:hidden ml-4 font-extrabold text-2xl dark:text-white">YYDY777</a>
+
                     <div class="relative">
                         <button id="themeToggleButton" type="button" aria-label="Switch theme" class="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition dark:pintree-bg-gray-900 dark:ring-white/10 dark:hover:ring-white/20">
               <svg id="sunIcon" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
@@ -176,101 +268,17 @@
             <!-- 主内容区 -->
             <main class="dark:pintree-bg-gray-900 flex-grow">
                 <div class="sticky top-63 z-39">
-
-                    <!-- 移动端专属搜索框：宽度撑满屏幕，仅显示上下边框 -->
-                    <div class="lg:hidden sticky top-16 z-30 bg-white dark:pintree-bg-gray-900 py-3">
-                        <style>
-                            #mobileSearchInput {
-                                /* 宽度撑满屏幕 */
-                                width: 100%;
-                                /* 移除默认样式 */
-                                border: none;
-                                outline: none !important;
-                                /* 强制移除轮廓，提高优先级 */
-                                background: transparent;
-                                box-shadow: none !important;
-                                /* 清除可能的阴影效果 */
-                                /* 仅保留上下边框 */
-                                border-top: 1px solid #e5e7eb;
-                                border-bottom: 1px solid #e5e7eb;
-                                border-left: none;
-                                border-right: none;
-                                /* 内边距调整 */
-                                padding: 8px 2rem;
-                                font-size: 14px;
-                                color: #3CB884;
-                                /* 浅色模式绿色字体 */
-                                /* 过渡效果 */
-                                transition: border-color 0.2s ease;
-                            }
-                            /* 深色模式适配 */
-                            
-                            .dark #mobileSearchInput {
-                                border-top-color: #374151;
-                                border-bottom-color: #374151;
-                                color: #ffffff;
-                                /* 深色模式白色字体 */
-                            }
-                            /* 占位符样式 */
-                            
-                            #mobileSearchInput::placeholder {
-                                color: #9ca3af;
-                                opacity: 1;
-                            }
-                            
-                            .dark #mobileSearchInput::placeholder {
-                                color: #d1d5db;
-                            }
-                            /* 输入框聚焦状态 - 仅显示绿色边框 */
-                            
-                            #mobileSearchInput:focus {
-                                border-top-color: #3CB884;
-                                border-bottom-color: #3CB884;
-                                outline: none !important;
-                                /* 再次强调移除轮廓 */
-                                box-shadow: none !important;
-                                /* 再次强调移除阴影 */
-                            }
-                            /* 隐藏浏览器默认清除按钮 */
-                            
-                            #mobileSearchInput::-webkit-search-cancel-button {
-                                -webkit-appearance: none;
-                                display: none;
-                            }
-                            
-                            #mobileSearchInput::-ms-clear {
-                                display: none;
-                            }
-                        </style>
-
-
-                        <div class="relative">
-                            <input id="mobileSearchInput" type="search" placeholder="Search...">
-
-                            <!-- 自定义清除按钮 -->
-                            <button id="mobileClearSearchButton" class="absolute right-[6px] top-[0px] h-full text-sm text-gray-500 hidden flex items-center">
-      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
-                        </div>
-                    </div>
-
-
-
                     <!-- 加载动画 -->
                     <div id="loading-spinner" class="flex justify-center items-center h-full">
                         <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-400 h-6 w-6"></div>
                     </div>
 
                     <!-- 面包屑导航 -->
-
                     <div id="breadcrumbs" class="px-6 text-sm text-gray-400 flex justify-between items-center">
                         <div id="breadcrumbs-path" class="">
                             <!-- Breadcrumbs will be inserted here -->
                         </div>
                     </div>
-                    <hr class="my-1 border-t-1 border-gray-200 dark:pintree-border-gray-800">
                 </div>
 
                 <!-- 书签容器 -->
@@ -294,7 +302,7 @@
                             <span class="sr-only">GitHub</span>
                             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill-rule="evenodd"
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.0 0022 12.017C22 6.484 17.522 2 12 2z"
                   clip-rule="evenodd" />
               </svg>
                         </a>
@@ -326,171 +334,114 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 侧边栏控制（移动端菜单）
-            const openSidebarButton = document.getElementById('open-sidebar-button');
-            const closeSidebarButton = document.getElementById('close-sidebar-button');
-            const offCanvasMenu = document.getElementById('off-canvas-menu');
-            const offCanvasBackdrop = document.getElementById('off-canvas-backdrop');
-            const offCanvasContent = document.getElementById('off-canvas-content');
+            // 保存完整数据的全局变量
+            let fullBookmarkData = null;
+            
+            // DOM元素缓存
+            const elements = {
+                openSidebarButton: document.getElementById('open-sidebar-button'),
+                sidebarContainer: document.querySelector('.sidebar-container'),
+                sidebarBackdrop: document.getElementById('sidebar-backdrop'),
+                mainContent: document.querySelector('.main-content'),
+                navigation: document.getElementById('navigation'),
+                pcSearchInput: document.getElementById('pcSearchInput'),
+                pcClearSearchButton: document.getElementById('pcClearSearchButton'),
+                loadingSpinner: document.getElementById('loading-spinner'),
+                bookmarks: document.getElementById('bookmarks'),
+                breadcrumbsPath: document.getElementById('breadcrumbs-path'),
+                themeToggleButton: document.getElementById('themeToggleButton'),
+                sunIcon: document.getElementById('sunIcon'),
+                moonIcon: document.getElementById('moonIcon'),
+                currentYear: document.getElementById('currentYear')
+            };
 
+            // 侧边栏控制
             const openSidebar = () => {
-                offCanvasMenu.classList.remove('hidden');
-                setTimeout(() => {
-                    offCanvasBackdrop.classList.add('opacity-100');
-                    offCanvasContent.classList.add('translate-x-0');
-                }, 10);
+                if (elements.sidebarContainer && elements.sidebarBackdrop && elements.mainContent) {
+                    elements.sidebarContainer.classList.add('active');
+                    elements.sidebarBackdrop.classList.add('active');
+                    elements.mainContent.classList.add('sidebar-open');
+                    document.body.style.overflow = 'hidden';
+                    ensureNavigationLoaded();
+                }
             };
 
             const closeSidebar = () => {
-                offCanvasBackdrop.classList.remove('opacity-100');
-                offCanvasContent.classList.remove('translate-x-0');
-                setTimeout(() => {
-                    offCanvasMenu.classList.add('hidden');
-                }, 300);
+                if (elements.sidebarContainer && elements.sidebarBackdrop && elements.mainContent) {
+                    elements.sidebarContainer.classList.remove('active');
+                    elements.sidebarBackdrop.classList.remove('active');
+                    elements.mainContent.classList.remove('sidebar-open');
+                    document.body.style.overflow = '';
+                }
             };
 
-            // 修复：原代码可能缺少openSidebarButton的DOM元素，补充容错
-            if (openSidebarButton) openSidebarButton.addEventListener('click', openSidebar);
-            if (closeSidebarButton) closeSidebarButton.addEventListener('click', closeSidebar);
-            if (offCanvasBackdrop) offCanvasBackdrop.addEventListener('click', closeSidebar);
-
-            // -------------------------- 搜索核心逻辑（PC+移动端共用） --------------------------
-            // 1. 统一搜索方法（支持PC/移动端输入框）
-            function searchBookmarks(query, isMobile = false) {
-                fetch('json/pintree.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        const results = searchInData(data, query.toLowerCase());
-                        renderBookmarks(results, [{
-                            title: 'Search Results',
-                            children: results
-                        }]);
-
-                        // 显示对应端的“清空”按钮
-                        if (isMobile) {
-                            document.getElementById('mobileClearSearchButton').classList.remove('hidden');
-                            document.getElementById('pcClearSearchButton').classList.add('hidden');
-                        } else {
-                            document.getElementById('pcClearSearchButton').classList.remove('hidden');
-                            document.getElementById('mobileClearSearchButton').classList.add('hidden');
-                        }
-                    })
-                    .catch(error => console.error('Error searching bookmarks:', error));
+            // 确保导航项已加载
+            function ensureNavigationLoaded() {
+                if (elements.navigation && elements.navigation.children.length === 0 && fullBookmarkData) {
+                    renderNavigation(fullBookmarkData || [], elements.navigation, true);
+                }
             }
 
+            // 事件绑定
+            elements.openSidebarButton?.addEventListener('click', openSidebar);
+            elements.sidebarBackdrop?.addEventListener('click', closeSidebar);
 
-            // 2. 递归搜索书签数据（新增URL匹配逻辑）
+            // 搜索功能
+            function searchBookmarks(query) {
+                if (!fullBookmarkData) return;
+                
+                const results = searchInData(fullBookmarkData, query.toLowerCase());
+                renderBookmarks(results, [{ title: 'Search Results', children: results }]);
+                elements.pcClearSearchButton?.classList.add('show');
+                closeSidebar();
+            }
+
             function searchInData(data, query) {
-                let results = [];
-                data.forEach(item => {
-                    // 同时匹配：标题包含关键词 OR URL包含关键词（满足其一即命中）
-                    const isTitleMatch = item.title?.toLowerCase().includes(query);
-                    const isUrlMatch = item.url?.toLowerCase().includes(query); // 新增URL匹配
-                    
-                    if (isTitleMatch || isUrlMatch) {
-                        results.push(item); // 标题或URL匹配，加入结果
-                    }
-                    
-                    // 递归搜索子文件夹（保持原有逻辑）
-                    if (item.children) {
-                        const childResults = searchInData(item.children, query);
-                        if (childResults.length > 0) {
-                            results = results.concat(childResults);
-                        }
-                    }
-                });
-                return results;
+                return data.reduce((results, item) => {
+                    const isMatch = item.title?.toLowerCase().includes(query) || item.url?.toLowerCase().includes(query);
+                    if (isMatch) results.push(item);
+                    if (item.children) results.push(...searchInData(item.children, query));
+                    return results;
+                }, []);
             }
 
-            // 3. 清空搜索结果（重置UI）
             function clearSearchResults() {
-                fetch('json/pintree.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        const secondLayer = data[0]?.children || data;
-                        renderNavigation(secondLayer, document.getElementById('navigation'));
-                        renderBookmarks(secondLayer, [{
-                            title: 'Bookmark',
-                            children: secondLayer
-                        }]);
-
-                        // 隐藏两端的“清空”按钮
-                        document.getElementById('pcSearchInput').value = '';
-                        document.getElementById('mobileSearchInput').value = '';
-                        document.getElementById('pcClearSearchButton').classList.add('hidden');
-                        document.getElementById('mobileClearSearchButton').classList.add('hidden');
-                    })
-                    .catch(error => console.error('Error clearing search results:', error));
+                if (!fullBookmarkData) return;
+                
+                const secondLayer = fullBookmarkData[0]?.children || fullBookmarkData;
+                renderNavigation(secondLayer, elements.navigation);
+                renderBookmarks(secondLayer, [{ title: 'Bookmark', children: secondLayer }]);
+                elements.pcSearchInput.value = '';
+                elements.pcClearSearchButton?.classList.remove('show');
             }
 
-            // -------------------------- PC端搜索事件绑定 --------------------------
-            const pcSearchButton = document.getElementById('pcSearchButton');
-            const pcSearchInput = document.getElementById('pcSearchInput');
-            const pcClearSearchButton = document.getElementById('pcClearSearchButton');
+            // 搜索事件绑定
+            elements.pcSearchInput?.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                elements.pcClearSearchButton?.classList.toggle('show', !!query);
+            });
+            
+            elements.pcSearchInput?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && elements.pcSearchInput.value.trim()) {
+                    searchBookmarks(elements.pcSearchInput.value.trim());
+                }
+            });
 
-            // PC：点击搜索按钮
-            if (pcSearchButton && pcSearchInput) {
-                pcSearchButton.addEventListener('click', () => {
-                    const query = pcSearchInput.value.trim();
-                    if (query) searchBookmarks(query, false);
-                });
-            }
+            elements.pcClearSearchButton?.addEventListener('click', clearSearchResults);
 
-            // PC：回车触发搜索
-            if (pcSearchInput) {
-                pcSearchInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        const query = pcSearchInput.value.trim();
-                        if (query) searchBookmarks(query, false);
-                    }
-                });
-            }
-
-            // PC：点击清空按钮
-            if (pcClearSearchButton) {
-                pcClearSearchButton.addEventListener('click', clearSearchResults);
-            }
-
-            // -------------------------- 移动端搜索事件绑定 --------------------------
-            const mobileSearchButton = document.getElementById('mobileSearchButton');
-            const mobileSearchInput = document.getElementById('mobileSearchInput');
-            const mobileClearSearchButton = document.getElementById('mobileClearSearchButton');
-
-            // 移动端：点击搜索图标
-            if (mobileSearchButton && mobileSearchInput) {
-                mobileSearchButton.addEventListener('click', () => {
-                    const query = mobileSearchInput.value.trim();
-                    if (query) searchBookmarks(query, true);
-                });
-            }
-
-            // 移动端：回车触发搜索
-            if (mobileSearchInput) {
-                mobileSearchInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        const query = mobileSearchInput.value.trim();
-                        if (query) searchBookmarks(query, true);
-                    }
-                });
-            }
-
-            // 移动端：点击清空按钮
-            if (mobileClearSearchButton) {
-                mobileClearSearchButton.addEventListener('click', clearSearchResults);
-            }
-
-            // -------------------------- 书签卡片创建 --------------------------
+            // 创建书签卡片
             function createCard(title, url, icon) {
                 const card = document.createElement('div');
                 card.className = 'cursor-pointer flex items-center hover:shadow-sm transition-shadow p-4 bg-white shadow-sm ring-1 ring-gray-900/5 dark:pintree-ring-gray-800 rounded-lg hover:bg-gray-100 dark:pintree-bg-gray-900 dark:hover:pintree-bg-gray-800';
 
-                // 限制协议处理（本地协议复制，其他跳转）
+                // 限制协议处理
                 const restrictedProtocols = ['chrome://', 'edge://', 'about:', 'file://'];
                 const isRestricted = restrictedProtocols.some(protocol => url.startsWith(protocol));
 
                 card.onclick = () => {
                     if (isRestricted) {
-                        navigator.clipboard.writeText(url).then(() => showToast("已复制"))
+                        navigator.clipboard.writeText(url)
+                            .then(() => showToast("已复制"))
                             .catch(err => {
                                 console.error('复制失败:', err);
                                 showToast("复制失败", true);
@@ -507,7 +458,7 @@
                 cardIcon.className = 'w-8 h-8 mr-4 rounded-full flex-shrink-0 card-icon-bg';
                 cardIcon.onerror = () => cardIcon.src = 'assets/default-icon.svg';
 
-                // 卡片内容（标题+清理后的URL）
+                // 卡片内容
                 const cardContent = document.createElement('div');
                 cardContent.className = 'flex flex-col overflow-hidden';
 
@@ -520,49 +471,44 @@
                 cardUrl.className = 'text-xs text-gray-400 dark:text-gray-600 dark:hover:text-gray-400 truncate';
                 cardUrl.innerText = cleanUrl;
 
-                cardContent.appendChild(cardTitle);
-                cardContent.appendChild(cardUrl);
-                card.appendChild(cardIcon);
-                card.appendChild(cardContent);
+                cardContent.append(cardTitle, cardUrl);
+                card.append(cardIcon, cardContent);
 
                 return card;
             }
 
-            // -------------------------- 文件夹卡片创建 --------------------------
+            // 创建文件夹卡片
             function createFolderCard(title, children, path) {
                 const card = document.createElement('div');
                 card.className = 'folder-card text-gray rounded-lg cursor-pointer flex flex-col items-center';
                 card.onclick = () => {
-                    const newPath = path.concat({
-                        title,
-                        children
-                    });
+                    const newPath = [...path, { title, children }];
                     renderBookmarks(children, newPath);
                     updateSidebarActiveState(newPath);
+                    closeSidebar();
                 };
 
                 const cardIcon = document.createElement('div');
                 cardIcon.innerHTML = `
-          <svg viewBox="0 0 100 80" class="folder__svg">
-            <rect x="0" y="0" width="100" height="80" class="folder__back" />
-            <rect             x="15" y="8" width="70" height="60" class="paper-1" />
-            <rect x="10" y="18" width="80" height="50" class="paper-2" />
-            <rect x="0" y="10" width="100" height="70" class="folder__front" />
-            <rect x="0" y="10" width="100" height="70" class="folder__front right" />
-          </svg>
-        `;
+                    <svg viewBox="0 0 100 80" class="folder__svg">
+                        <rect x="0" y="0" width="100" height="80" class="folder__back" />
+                        <rect x="15" y="8" width="70" height="60" class="paper-1" />
+                        <rect x="10" y="18" width="80" height="50" class="paper-2" />
+                        <rect x="0" y="10" width="100" height="70" class="folder__front" />
+                        <rect x="0" y="10" width="100" height="70" class="folder__front right" />
+                    </svg>
+                `;
                 cardIcon.className = 'mb-2';
 
                 const cardTitle = document.createElement('h2');
                 cardTitle.className = 'text-xs font-normal text-center w-full truncate dark:text-gray-400';
                 cardTitle.innerText = title;
 
-                card.appendChild(cardIcon);
-                card.appendChild(cardTitle);
+                card.append(cardIcon, cardTitle);
                 return card;
             }
 
-            // -------------------------- 侧边栏导航渲染 --------------------------
+            // 渲染导航菜单
             function renderNavigation(folders, container, isFirstRender = false, path = []) {
                 if (!container) return;
                 container.innerHTML = '';
@@ -570,160 +516,178 @@
                 folders.forEach((folder, index) => {
                     if (folder.type !== 'folder') return;
 
-                    const navItem = document.createElement('li');
-                    navItem.className = 'items-center group flex justify-between gap-x-3 rounded-md p-2 text-gray-700 dark:text-gray-400 hover:text-main-500 hover:bg-gray-50 dark:hover:pintree-bg-gray-800 bg-opacity-50';
+                    // 创建主菜单项容器
+                    const navItemWrapper = document.createElement('li');
+                    navItemWrapper.className = 'mb-1';
 
+                    // 创建标题行容器
+                    const navItem = document.createElement('div');
+                    navItem.className = 'group flex justify-between items-center rounded-md p-1 text-gray-700 dark:text-gray-400 hover:text-main-500 hover:bg-gray-50 dark:hover:pintree-bg-gray-800 transition-colors duration-150';
+
+                    // 创建链接部分
                     const navLinkContainer = document.createElement('div');
-                    navLinkContainer.className = 'flex items-center space-x-2 truncate';
-
-                    const folderIcon = document.createElement('span');
-                    folderIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h7a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>';
-
-                    const navLink = document.createElement('a');
-                    navLink.className = 'flex text-sm leading-6 font-semibold dark:text-gray-400';
-                    navLink.innerText = folder.title;
-
-                    navLinkContainer.appendChild(folderIcon);
-                    navLinkContainer.appendChild(navLink);
-
-                    const toggleIcon = document.createElement('span');
-                    toggleIcon.className = 'ml-2 transform transition-transform';
-                    toggleIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>';
-
-                    navItem.appendChild(navLinkContainer);
-                    if (folder.children?.length > 0) navItem.appendChild(toggleIcon);
-                    container.appendChild(navItem);
-
-                    // 子菜单渲染
-                    if (folder.children?.length > 0) {
-                        const subList = document.createElement('ul');
-                        subList.className = 'ml-4 space-y-2 hidden';
-                        renderNavigation(folder.children, subList, false, path.concat({
+                    navLinkContainer.className = 'flex items-center space-x-2 truncate flex-1 cursor-pointer';
+                    navLinkContainer.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        renderBookmarks(folder.children || [], [...path, {
                             title: folder.title,
-                            children: folder.children
-                        }));
-                        container.appendChild(subList);
+                            children: folder.children || []
+                        }]);
+                        if (window.innerWidth <= 1023) closeSidebar();
+                    });
 
-                        // 初始渲染时展开第一个文件夹
+                    // 文件夹图标和名称
+                    navLinkContainer.innerHTML = `
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h7a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                            </svg>
+                        </span>
+                        <a class="text-sm leading-6 font-semibold dark:text-gray-400 truncate">${folder.title}</a>
+                    `;
+                    
+                    navItem.appendChild(navLinkContainer);
+
+                    // 检查是否有有效子项
+                    let hasValidChildren = false;
+                    if (folder.children && Array.isArray(folder.children) && folder.children.length > 0) {
+                        for (let i = 0; i < folder.children.length; i++) {
+                            const item = folder.children[i];
+                            if (item && (item.type === 'folder' || item.type === 'link')) {
+                                hasValidChildren = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // 添加展开图标和子菜单容器
+                    if (hasValidChildren) {
+                        const toggleIcon = document.createElement('span');
+                        toggleIcon.className = 'ml-2 transform transition-transform duration-200 cursor-pointer flex-shrink-0 toggle-icon';
+                        toggleIcon.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        `;
+                        
+                        const submenuContainer = document.createElement('div');
+                        submenuContainer.className = 'submenu-container ml-6 mt-1 border-l-2 border-green-200 dark:border-green-900 pl-3';
+                        
+                        // 递归渲染子菜单
+                        renderNavigation(folder.children, submenuContainer, false, [...path, { title: folder.title }]);
+                        
+                        // 绑定展开/收缩事件
+                        toggleIcon.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            submenuContainer.classList.toggle('active');
+                            toggleIcon.classList.toggle('rotate-90');
+                        });
+                        
+                        navItem.appendChild(toggleIcon);
+                        navItemWrapper.append(navItem, submenuContainer);
+
+                        // 初始展开第一个文件夹
                         if (isFirstRender && index === 0) {
-                            subList.classList.remove('hidden');
+                            submenuContainer.classList.add('active');
                             toggleIcon.classList.add('rotate-90');
                         }
-
-                        // 点击文件夹展开/切换书签
-                        navItem.onclick = (e) => {
-                            e.stopPropagation();
-                            document.querySelectorAll('#navigation .sidebar-active').forEach(el => el.classList.remove('sidebar-active'));
-                            navItem.classList.add('sidebar-active');
-                            subList.classList.toggle('hidden');
-                            if (subList.children.length > 0) toggleIcon.classList.toggle('rotate-90');
-                            renderBookmarks(folder.children, path.concat({
-                                title: folder.title,
-                                children: folder.children
-                            }));
-                        };
                     } else {
-                        // 无子女文件夹点击逻辑
-                        navItem.onclick = (e) => {
-                            e.stopPropagation();
-                            document.querySelectorAll('#navigation .sidebar-active').forEach(el => el.classList.remove('sidebar-active'));
-                            navItem.classList.add('sidebar-active');
-                            renderBookmarks(folder.children || [], path.concat({
-                                title: folder.title,
-                                children: folder.children || []
-                            }));
-                        };
+                        navItemWrapper.appendChild(navItem);
+                    }
+
+                    container.appendChild(navItemWrapper);
+                });
+
+                // 清理无效图标
+                container.querySelectorAll('li').forEach(item => {
+                    const toggleIcon = item.querySelector('.toggle-icon');
+                    const submenu = item.querySelector('.submenu-container');
+                    if (toggleIcon && (!submenu || submenu.children.length === 0)) {
+                        toggleIcon.remove();
                     }
                 });
             }
 
-            // -------------------------- 面包屑导航渲染 --------------------------
+            // 渲染面包屑导航
             function renderBreadcrumbs(path) {
-                const breadcrumbsPath = document.getElementById('breadcrumbs-path');
-                if (!breadcrumbsPath) return;
-                breadcrumbsPath.innerHTML = '';
+                if (!elements.breadcrumbsPath) return;
+                elements.breadcrumbsPath.innerHTML = '';
 
                 path.forEach((item, index) => {
                     const breadcrumb = document.createElement('span');
                     breadcrumb.className = 'cursor-pointer hover:underline bg-yydy';
                     breadcrumb.innerText = item.title;
                     breadcrumb.onclick = () => {
-                        const newPath = path.slice(0, index + 1);
-                        renderBookmarks(item.children || [], newPath);
-                        updateSidebarActiveState(newPath);
-                        document.getElementById('pcClearSearchButton').classList.add('hidden');
-                        document.getElementById('mobileClearSearchButton').classList.add('hidden');
+                        // 从完整数据中重新获取对应路径的内容
+                        if (fullBookmarkData) {
+                            const targetData = findDataByPath(fullBookmarkData, path.slice(0, index + 1));
+                            renderBookmarks(targetData, path.slice(0, index + 1));
+                            updateSidebarActiveState(path.slice(0, index + 1));
+                            elements.pcClearSearchButton?.classList.remove('show');
+                        }
                     };
 
-                    breadcrumbsPath.appendChild(breadcrumb);
+                    elements.breadcrumbsPath.appendChild(breadcrumb);
                     if (index < path.length - 1) {
                         const separator = document.createElement('span');
                         separator.innerText = ' > ';
-                        breadcrumbsPath.appendChild(separator);
+                        elements.breadcrumbsPath.appendChild(separator);
                     }
                 });
             }
+            
+            // 根据路径从完整数据中查找对应内容
+            function findDataByPath(data, path) {
+                // 跳过第一个"Bookmark"节点
+                let currentData = path[0]?.title === 'Bookmark' ? [...data] : data;
+                
+                // 从路径的第二个节点开始查找
+                for (let i = path[0]?.title === 'Bookmark' ? 1 : 0; i < path.length; i++) {
+                    const found = currentData.find(item => item.title === path[i].title);
+                    if (!found) return [];
+                    currentData = found.children || [];
+                }
+                return currentData;
+            }
 
-            // -------------------------- 侧边栏激活状态更新 --------------------------
+            // 更新侧边栏激活状态
             function updateSidebarActiveState(path) {
-                document.querySelectorAll('#navigation .sidebar-active').forEach(el => el.classList.remove('sidebar-active'));
-                let currentNav = document.getElementById('navigation');
+                let currentNav = elements.navigation;
                 if (!currentNav) return;
 
                 path.forEach((item, index) => {
-                    const items = currentNav.querySelectorAll('li');
-                    items.forEach(navItem => {
+                    currentNav.querySelectorAll('li').forEach(navItem => {
                         const navLink = navItem.querySelector('a');
-                        if (navLink && navLink.innerText === item.title) {
-                            if (index === path.length - 1) navItem.classList.add('sidebar-active');
-                            if (index < path.length - 1) {
-                                const subList = navItem.querySelector('ul');
-                                if (subList) {
-                                    subList.classList.remove('hidden');
-                                    currentNav = subList;
-                                }
+                        if (navLink && navLink.innerText === item.title && index < path.length - 1) {
+                            const submenu = navItem.querySelector('.submenu-container');
+                            if (submenu) {
+                                submenu.classList.add('active');
+                                navItem.querySelector('.transform')?.classList.add('rotate-90');
+                                currentNav = submenu;
                             }
                         }
                     });
                 });
             }
 
-            // -------------------------- 无结果提示 --------------------------
+            // 无结果提示
             function showNoResultsMessage() {
-                const container = document.getElementById('bookmarks');
-                if (!container) return;
-                container.innerHTML = '';
-
-                const messageContainer = document.createElement('div');
-                messageContainer.className = 'flex flex-col items-center justify-center h-full';
-
-                const icon = document.createElement('svg');
-                icon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-                icon.setAttribute('class', 'h-16 w-16 text-gray-500');
-                icon.setAttribute('fill', 'none');
-                icon.setAttribute('viewBox', '0 0 24 24');
-                icon.setAttribute('stroke', 'currentColor');
-                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-3a9 9 0 11-18 0 9 9 0 0118 0z" />';
-
-                const title = document.createElement('h2');
-                title.className = 'text-gray-500 text-xl font-semibold mt-4';
-                title.innerText = 'Oops, Nothing to See Here!';
-
-                const message = document.createElement('p');
-                message.className = 'text-gray-500 mt-2';
-                message.innerText = 'Try another search or discover more cool stuff elsewhere!';
-
-                messageContainer.appendChild(icon);
-                messageContainer.appendChild(title);
-                messageContainer.appendChild(message);
-                container.appendChild(messageContainer);
+                if (!elements.bookmarks) return;
+                elements.bookmarks.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h2 class="text-gray-500 text-xl font-semibold mt-4">Oops, Nothing to See Here!</h2>
+                        <p class="text-gray-500 mt-2">Try another search or discover more cool stuff elsewhere!</p>
+                    </div>
+                `;
             }
 
-            // -------------------------- 书签渲染主函数 --------------------------
+            // 渲染书签
             function renderBookmarks(data, path) {
-                const container = document.getElementById('bookmarks');
-                if (!container) return;
-                container.innerHTML = '';
+                if (!elements.bookmarks) return;
+                elements.bookmarks.innerHTML = '';
 
                 // 渲染面包屑
                 renderBreadcrumbs(path);
@@ -743,14 +707,14 @@
                     const folderSection = document.createElement('div');
                     folderSection.className = 'grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 2xl:grid-cols-12 gap-6';
                     folders.forEach(folder => folderSection.appendChild(createFolderCard(folder.title, folder.children, path)));
-                    container.appendChild(folderSection);
+                    elements.bookmarks.appendChild(folderSection);
                 }
 
                 // 文件夹与链接之间添加分隔线
                 if (folders.length > 0 && links.length > 0) {
                     const separator = document.createElement('hr');
                     separator.className = 'my-1 border-t-1 border-gray-200 dark:pintree-border-gray-800';
-                    container.appendChild(separator);
+                    elements.bookmarks.appendChild(separator);
                 }
 
                 // 渲染链接
@@ -758,14 +722,14 @@
                     const linkSection = document.createElement('div');
                     linkSection.className = 'grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6';
                     links.forEach(link => linkSection.appendChild(createCard(link.title, link.url, link.icon)));
-                    container.appendChild(linkSection);
+                    elements.bookmarks.appendChild(linkSection);
                 }
 
                 // 更新侧边栏激活状态
                 updateSidebarActiveState(path);
             }
 
-            // -------------------------- 悬浮提示函数 --------------------------
+            // 悬浮提示函数
             function showToast(msg, error = false) {
                 const toast = document.createElement('div');
                 Object.assign(toast.style, {
@@ -798,101 +762,98 @@
                 }, 1500);
             }
 
-            // -------------------------- 主题切换逻辑 --------------------------
-            const themeToggleButton = document.getElementById('themeToggleButton');
-            const sunIcon = document.getElementById('sunIcon');
-            const moonIcon = document.getElementById('moonIcon');
-
+            // 主题切换逻辑
             function applyDarkTheme() {
                 document.documentElement.classList.add('dark');
-                sunIcon?.classList.add('hidden');
-                moonIcon?.classList.remove('hidden');
+                elements.sunIcon?.classList.add('hidden');
+                elements.moonIcon?.classList.remove('hidden');
             }
 
             function applyLightTheme() {
                 document.documentElement.classList.remove('dark');
-                sunIcon?.classList.remove('hidden');
-                moonIcon?.classList.add('hidden');
+                elements.sunIcon?.classList.remove('hidden');
+                elements.moonIcon?.classList.add('hidden');
             }
 
             function toggleTheme() {
                 document.documentElement.classList.contains('dark') ? applyLightTheme() : applyDarkTheme();
             }
 
-            // 主题切换按钮事件
-            if (themeToggleButton) themeToggleButton.addEventListener('click', toggleTheme);
+            elements.themeToggleButton?.addEventListener('click', toggleTheme);
 
             // 跟随系统主题
             const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            applyColorTheme(prefersDarkTheme ? 'dark' : 'light');
-
-            function applyColorTheme(theme) {
-                theme === 'dark' ? applyDarkTheme() : applyLightTheme();
-            }
+            (prefersDarkTheme ? applyDarkTheme : applyLightTheme)();
 
             // 监听系统主题变化
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-                applyColorTheme(event.matches ? 'dark' : 'light');
+                (event.matches ? applyDarkTheme : applyLightTheme)();
             });
 
-            // -------------------------- 初始化数据加载 --------------------------
+            // 初始化数据加载
             fetch('json/pintree.json')
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
                 })
                 .then(data => {
+                    // 保存完整数据
+                    fullBookmarkData = [...data];
+                    
                     // 隐藏加载动画
-                    document.getElementById('loading-spinner').style.display = 'none';
+                    elements.loadingSpinner.style.display = 'none';
 
                     const firstLayer = data || [];
-                    const navContainer = document.getElementById('navigation');
-                    if (navContainer) renderNavigation(firstLayer, navContainer, true);
+                    if (elements.navigation) renderNavigation(firstLayer, elements.navigation, true);
 
-                    // 初始渲染书签（默认显示第一个文件夹内容）
+                    // 初始渲染书签
                     if (firstLayer.length > 0) {
                         const firstItem = firstLayer[0];
-                        const initialPath = [{
-                            title: 'Bookmark',
-                            children: firstLayer
-                        }, {
-                            title: firstItem.title,
-                            children: firstItem.children || []
-                        }];
+                        const initialPath = [
+                            { title: 'Bookmark', children: firstLayer },
+                            { title: firstItem.title, children: firstItem.children || [] }
+                        ];
                         renderBookmarks(firstItem.children || [], initialPath);
                         updateSidebarActiveState(initialPath);
                     } else {
-                        renderBookmarks([], [{
-                            title: 'Bookmark',
-                            children: []
-                        }]);
+                        renderBookmarks([], [{ title: 'Bookmark', children: [] }]);
                     }
                 })
                 .catch(error => {
                     console.error('Error loading bookmarks:', error);
-                    document.getElementById('loading-spinner').style.display = 'none';
+                    elements.loadingSpinner.style.display = 'none';
                     showNoResultsMessage();
                 });
 
-            // -------------------------- 移动端侧边栏内容复制 --------------------------
-            const mobileOpenSidebarBtn = document.getElementById('open-sidebar-button');
-            if (mobileOpenSidebarBtn) {
-                mobileOpenSidebarBtn.addEventListener('click', function() {
-                    const navContainer = document.getElementById('navigation');
-                    const mobileSidebar = document.getElementById('sidebar-2');
-                    if (navContainer && mobileSidebar) {
-                        mobileSidebar.innerHTML = '';
-                        const navClone = navContainer.cloneNode(true);
-                        mobileSidebar.appendChild(navClone);
-                    }
-                });
-            }
+            // 年份自动更新
+            elements.currentYear.textContent = new Date().getFullYear();
 
-            // -------------------------- 年份自动更新（页脚） --------------------------
-            const yearElement = document.getElementById('currentYear');
-            if (yearElement) yearElement.textContent = new Date().getFullYear();
+            // 窗口大小变化时处理
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 1023) {
+                    // 桌面视图始终显示侧边栏
+                    if (elements.sidebarContainer && elements.sidebarBackdrop && elements.mainContent) {
+                        elements.sidebarContainer.classList.add('active');
+                        elements.sidebarBackdrop.classList.remove('active');
+                        elements.mainContent.classList.remove('sidebar-open');
+                    }
+                } else {
+                    // 移动视图默认隐藏侧边栏
+                    if (elements.sidebarContainer && elements.sidebarBackdrop && elements.mainContent) {
+                        elements.sidebarContainer.classList.remove('active');
+                        elements.sidebarBackdrop.classList.remove('active');
+                        elements.mainContent.classList.remove('sidebar-open');
+                    }
+                }
+            });
+
+            // 初始化时根据窗口大小设置侧边栏状态
+            if (window.innerWidth > 1023 && elements.sidebarContainer) {
+                elements.sidebarContainer.classList.add('active');
+            }
         });
     </script>
 </body>
 
 </html>
+    
