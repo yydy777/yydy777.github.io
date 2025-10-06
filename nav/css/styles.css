@@ -13,6 +13,17 @@
     background: #fff;
 }
 
+#pcSearchInput::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display: none;
+}
+
+#pcSearchInput::-ms-clear {
+    display: none;
+}
+
+                            
+
 .dark .top-63 {
     background: #111418;
 }
