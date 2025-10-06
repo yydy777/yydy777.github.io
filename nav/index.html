@@ -378,14 +378,25 @@
                     .catch(error => console.error('Error searching bookmarks:', error));
             }
 
-            // 2. 递归搜索书签数据
+
+            // 2. 递归搜索书签数据（新增URL匹配逻辑）
             function searchInData(data, query) {
                 let results = [];
                 data.forEach(item => {
-                    if (item.title?.toLowerCase().includes(query)) results.push(item);
+                    // 同时匹配：标题包含关键词 OR URL包含关键词（满足其一即命中）
+                    const isTitleMatch = item.title?.toLowerCase().includes(query);
+                    const isUrlMatch = item.url?.toLowerCase().includes(query); // 新增URL匹配
+                    
+                    if (isTitleMatch || isUrlMatch) {
+                        results.push(item); // 标题或URL匹配，加入结果
+                    }
+                    
+                    // 递归搜索子文件夹（保持原有逻辑）
                     if (item.children) {
                         const childResults = searchInData(item.children, query);
-                        if (childResults.length > 0) results = results.concat(childResults);
+                        if (childResults.length > 0) {
+                            results = results.concat(childResults);
+                        }
                     }
                 });
                 return results;
