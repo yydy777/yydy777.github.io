@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-  <title>批量打开网页</title>
+  <title>批量打开网址工具</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="description" content="Spectre.css CSS Framework is a lightweight,cage.">
+  <meta name="description" content="批量网址工具">
 
   <link rel="shortcut icon" href="img/favicons/favicon.ico">
   <link rel="icon" href="img/favicons/favicon.png">
@@ -14,87 +14,133 @@
   <link rel="stylesheet" href="css/spectre-icons.css">
   <link rel="stylesheet" href="css/spectre-exp.css">
   <link rel="stylesheet" href="css/docs.css">
-
+  
   <script src="template/header.js"></script>
   <script src="template/sidebar.js"></script>
   <script src="template/footer.js"></script>
+    <style>
+        .progress-bar { width: 100%; height: 6px; background: #eee; border: 1px solid #dcdfe6; border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+        .progress-fill { height: 100%; background: #000; width: 0%; transition: width 0.3s; }
+    </style>
 
 </head>
 
 <body class="docs-container off-canvas off-canvas-sidebar-show">
 
   <header class="docs-navbar" id="header"></header>
-
   <div class="docs-sidebar off-canvas-sidebar" id="sidebar"></div>
-
   <a class="off-canvas-overlay" href="#close"></a>
 
   <div class="off-canvas-content">
     <div class="docs-content" id="content">
-      <main class="container" id="URLS">
+      <main class="container" id="installation">
+        <h3 class="s-title">批量打开网址工具<a class="anchor" href="#installation" aria-hidden="true">#</a></h3>
 
-        <h3 class="s-title">批量打开网址<a class="anchor" href="#URLS" aria-hidden="true">#</a></h3>
-        <!-- normal input group with button -->
+        <!-- ========== 纯 Spectre 样式 批量网址工具 ========== -->
 
-        <div class="form-group">
-          <textarea class="form-input col-10" id="websitesInput" placeholder="输入多行网址或内容" rows="8"></textarea>
-        </div>
 
-        <div class="form-group">
-          <input class="form-input col-10" type="text" id="prefixInput" placeholder="输入网址前缀">
-        </div>
+		<div class="card-body">
 
-        <div class="form-group" id="buttonContainer"></div>
+		<!-- 前缀输入 -->
+		<div class="form-group">
+		  <label class="form-label"><strong>URL 前缀</strong></label>
+		  <input 
+			type="text" 
+			id="prefixInput" 
+			class="form-input" 
+			placeholder="例如：http://192.168.1.{val}/">
+		</div>
 
-        <div class="form-group">
-          <button class="btn btn-primary mb-1" onclick="clearPrefix()">清空前缀</button>
-          <button class="btn btn-primary mb-1" onclick="clearInput()">清空内容</button>
-          <button class="btn btn-primary mb-1" id="webButton">粘贴内容</button>
-          <button class="btn btn-primary mb-1" onclick="openWebsites()">批量打开</button>
-        </div>
+		<div class="my-2">
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='http://192.168.1.{val}/'">内网设备</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.google.com/search?q={val}'">谷歌搜索</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="pasteTo('prefix')">粘贴前缀</button>
+		  <button class="btn btn-sm btn-error mb-1" onclick="clearData('prefix')">清空前缀</button>
+		</div>
 
+		<div class="divider my-2"></div>
+
+		<!-- 工具栏：电脑端一行紧凑排列，小屏幕自动换行且不重叠 -->
+		<div class="columns">
+		  <div class="column col-auto my-1">
+			<div class="form-group" style="margin-bottom:0">
+			  <label class="form-label" style="display:inline-block;margin-right:4px">分组:</label>
+			  <input type="number" id="groupSize" class="form-input" value="0" style="width:70px;display:inline-block">
+			</div>
+		  </div>
+
+		  <div class="column col-auto my-1">
+			<div class="form-group" style="margin-bottom:0">
+			  <label class="form-label" style="display:inline-block;margin-right:4px">间隔(ms):</label>
+			  <input type="number" id="delayTime" class="form-input" value="0" style="width:70px;display:inline-block">
+			</div>
+		  </div>
+
+		  <div class="column col-auto my-1">
+			<label class="form-checkbox" style="display:inline-block;margin-right:8px">
+			  <input type="checkbox" id="loopMode" checked>
+			  <i class="form-icon"></i> 循环
+			</label>
+			<label class="form-checkbox" style="display:inline-block;margin-right:8px">
+			  <input type="checkbox" id="newWin">
+			  <i class="form-icon"></i> 新窗
+			</label>
+			<label class="form-checkbox" style="display:inline-block">
+			  <input type="checkbox" id="closePrev">
+			  <i class="form-icon"></i> 关旧开新
+			</label>
+		  </div>
+
+		  <div class="column col-auto ml-auto my-1">
+			<button class="btn btn-primary btn-sm mr-1 mb-1" onclick="setExample()">示例</button>
+			<button class="btn btn-primary btn-sm mr-1 mb-1" onclick="copyContent()">复制</button>
+			<button class="btn btn-primary btn-sm mb-1" onclick="formatContent()">整理</button>
+		  </div>
+		</div>
+		<!-- 文本域 -->
+		<div class="form-group my-2">
+		  <textarea 
+			id="mainInput" 
+			class="form-input" 
+			rows="8" 
+			placeholder="每行输入一个内容..."></textarea>
+		</div>
+
+		<!-- 进度条（已修复） -->
+		<div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+
+
+		<!-- 主按钮 (彻底解决重叠) -->
+		<div class="my-1">
+		  <button class="btn mr-1 mb-1" onclick="pasteTo('content')">粘贴内容</button>
+		  <button class="btn btn-error mr-1 mb-1" onclick="clearData('content')">清空内容</button>
+		  <button class="btn btn-primary mr-1 mb-1" id="startBtn" onclick="runTask()">批量打开</button>
+		  <button class="btn btn-error mr-1 mb-1" id="stopBtn" style="display:none" onclick="stopTask()">停止</button>
+		  <button class="btn mr-1 mb-1" id="resetBtn" style="display:none" onclick="resetProgress()">重置进度</button>
+		  <button class="btn mb-1" onclick="closeTabs()">关闭已开标签</button>
+		</div>
+
+		<!-- 统计 -->
+		<div class="columns my-2">
+		  <div class="column col-4"><div class="p-2 bg-gray rounded">总量：<span id="valTotal">0</span></div></div>
+		  <div class="column col-4"><div class="p-2 bg-gray rounded">当前：<span id="valCurrent">0</span></div></div>
+		  <div class="column col-4"><div class="p-2 bg-gray rounded">进度：<span id="valPercent">0%</span></div></div>
+		</div>
+
+		<!-- 日志 -->
+		<div class="bg-dark text-white p-2 rounded mt-1" style="height:80px;overflow:auto;font-size:12px" id="logArea"></div>
+
+		</div>
 
 
       </main>
-      <script type="text/javascript" src="js/urls.js"></script>
-      <script>
-        // 按钮的数据  
-        const buttonsData = [
-          { value: "baidu.com", text: "baidu" },
-          { value: "bing.com", text: "bing" },
-          { value: "goole.com", text: "goole" },
-        ];
-
-        // 动态生成按钮的函数  
-        function generateButtons(buttons) {
-          const container = document.getElementById('buttonContainer');
-          buttons.forEach(buttonData => {
-            const button = document.createElement('button');
-            button.className = 'btn mr-1 mb-1';
-            button.value = buttonData.value;
-            button.textContent = buttonData.text; // 使用 textContent 而不是 value 来设置按钮上显示的文本  
-            button.onclick = function (event) {
-              handleButtonClick(event, this.value); // 将 value 作为参数传递给事件处理函数  
-            };
-            container.appendChild(button);
-          });
-        }
-
-        // 调用函数生成按钮  
-        generateButtons(buttonsData);  
-      </script>
-
-
+      
       <script type="text/javascript" src="js/so.js"></script>
-
+	  <script type="text/javascript" src="js/urls.js"></script>
       <footer class="docs-footer container grid-lg" id="footer"></footer>
-
     </div>
-
-
   </div>
 
 
 </body>
-
 </html>
