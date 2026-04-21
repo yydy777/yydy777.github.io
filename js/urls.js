@@ -4,10 +4,30 @@ let openedTabs = [];
 let lastActiveTab = null;
 let currentIdx = 0;
 
+// --- 支持撤销的赋值函数 ---
+function updateInputWithUndo(text) {
+	const input = document.getElementById('mainInput');
+	input.focus();
+	input.setSelectionRange(0, input.value.length);
+	const success = document.execCommand('insertText', false, text);
+	if (!success) {
+		input.value = text;
+	}
+}
+
+// --- 撤销功能 ---
+function undoAction() {
+	const input = document.getElementById('mainInput');
+	input.focus();
+	document.execCommand('undo', false, null);
+	updateStats();
+	addLog("已执行撤销操作");
+}
+
 function initTags() {
 	document.querySelectorAll('.tag[data-url]').forEach(tag => {
 		tag.addEventListener('click', function() {
-			document.getElementById('prefixInput').value = this.getAttribute('data-url');
+			document.getElementById('prefixInput').value = tag.getAttribute('data-url');
 			saveData();
 		});
 	});
@@ -20,32 +40,51 @@ async function pasteTo(target) {
 			document.getElementById('prefixInput').value = text;
 			saveData();
 		} else {
-			document.getElementById('mainInput').value = text;
+			updateInputWithUndo(text);
 			resetProgress();
 		}
-		addLog(`已同步剪贴板内容到${target === 'prefix' ? '前缀' : '主体'}`);
+		addLog(`已粘贴内容到${target === 'prefix' ? '前缀' : '主体'}`);
 	} catch (err) {
 		alert("无法访问剪贴板，请手动粘贴。");
 	}
 }
 
+// --- 去重功能 ---
+function removeDuplicates(isSilent = false) {
+	const list = getList();
+	if (list.length === 0) return;
+	const newList = [...new Set(list)];
+	const newText = newList.join('\n');
+	
+	if (newText !== document.getElementById('mainInput').value.trim()) {
+		updateInputWithUndo(newText);
+	}
+	
+	updateStats();
+	if (!isSilent) addLog("去重整理完成");
+}
+
+// --- 格式化功能：已去掉前缀限制，强制执行 ---
 function formatContent() {
-	const prefix = document.getElementById('prefixInput').value.trim();
 	let list = getList();
 	if (list.length === 0) return;
-	list = [...new Set(list)];
-	if (!prefix) {
-		list = list.map(item => {
-			let url = item;
-			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
-			if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) url = url + '/';
-			return url;
-		});
-		addLog("完成标准化格式处理");
-	} else {
-		addLog("完成数据去重处理");
-	}
-	document.getElementById('mainInput').value = list.join('\n');
+
+	// 强制对每一行进行网址补全处理
+	const formattedList = list.map(item => {
+		let url = item;
+		// 补全协议头
+		if (!url.startsWith('http') && !url.startsWith('//')) {
+			url = 'http://' + url;
+		}
+		// 补全尾部斜杠（如果不含参数或锚点）
+		if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) {
+			url = url + '/';
+		}
+		return url;
+	});
+
+	updateInputWithUndo(formattedList.join('\n'));
+	addLog("内容格式化处理完成（已强制补全协议与斜杠）");
 	updateStats();
 }
 
@@ -64,10 +103,18 @@ function updateStats() {
 	document.getElementById('progressFill').style.width = percent + "%";
 }
 
-function getList() { return document.getElementById('mainInput').value.split('\n').map(s => s.trim()).filter(Boolean); }
+function getList() { 
+	return document.getElementById('mainInput').value.split('\n')
+		   .map(s => s.trim())
+		   .filter(Boolean); 
+}
 
 async function runTask() {
 	if (isTaskRunning) return;
+	
+	// 任务开始前自动去重
+	removeDuplicates(true); 
+	
 	const list = getList();
 	if (!list.length) { addLog("错误：未检测到有效数据"); return; }
 	
@@ -86,19 +133,14 @@ async function runTask() {
 		let val = list[i];
 		let url = "";
 
-		// 核心修复逻辑：
 		if (prefix !== "") {
-			// 如果前缀不为空，强制进行合并
 			if (prefix.includes("{val}")) {
 				url = prefix.replace("{val}", val);
 			} else {
-				// 如果前缀里没写{val}，则按 路径拼接 逻辑处理
 				url = prefix.endsWith('/') ? prefix + val : prefix + '/' + val;
 			}
-			// 确保合并后的结果有协议头
 			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
 		} else {
-			// 只有当前缀为空时，才把内容当做独立网址
 			url = val;
 			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
 		}
@@ -110,7 +152,7 @@ async function runTask() {
 		try {
 			let win = window.open(url, "_blank");
 			if (win) { openedTabs.push(win); lastActiveTab = win; }
-		} catch (e) { addLog("弹窗拦截，请检查权限"); }
+		} catch (e) { addLog("窗口被拦截，请允许弹出窗口"); }
 		
 		currentIdx = i + 1;
 		updateStats();
@@ -121,29 +163,38 @@ async function runTask() {
 	isTaskRunning = false;
 	document.getElementById('stopBtn').style.display = 'none';
 	updateStats();
-	addLog("任务当前阶段已完成");
+	addLog("批量操作完成");
 }
 
 function clearData(type) {
-	if (type === 'prefix') { document.getElementById('prefixInput').value = ""; saveData(); }
-	else { document.getElementById('mainInput').value = ""; currentIdx = 0; updateStats(); }
+	if (type === 'prefix') { 
+		document.getElementById('prefixInput').value = ""; 
+		saveData(); 
+	} else { 
+		updateInputWithUndo("");
+		currentIdx = 0; 
+		updateStats(); 
+	}
 	addLog(`已清空${type === 'prefix' ? '前缀' : '内容'}`);
 }
 
-function resetProgress() { currentIdx = 0; updateStats(); addLog("进度归零"); }
-function stopTask() { isTaskRunning = false; addLog("已人工停止运行"); }
-function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已执行强制关窗"); }
+function resetProgress() { currentIdx = 0; updateStats(); addLog("进度已重置"); }
+function stopTask() { isTaskRunning = false; addLog("已停止运行"); }
+function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已关闭已开页面"); }
 function saveData() { localStorage.setItem('pei_prefix', document.getElementById('prefixInput').value); }
 
 function setExample() { 
 	document.getElementById('prefixInput').value = "https://www.baidu.com/s?wd={val}"; 
-	document.getElementById('mainInput').value = "192.168.1.1\nhttps://www.baidu.com/\nhttps://bing.com";
+	updateInputWithUndo("123\n爬虫\nPython");
 	currentIdx = 0;
 	updateStats();
-	addLog("载入测试样例数据");
+	addLog("已载入测试数据");
 }
 
-async function copyContent() { await navigator.clipboard.writeText(document.getElementById('mainInput').value); addLog("内容已复制到剪切板"); }
+async function copyContent() { 
+	await navigator.clipboard.writeText(document.getElementById('mainInput').value); 
+	addLog("内容已复制到剪贴板"); 
+}
 
 function addLog(msg) {
 	const area = document.getElementById('logArea');
