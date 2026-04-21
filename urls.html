@@ -53,7 +53,13 @@
 
 		<div class="my-2">
 		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='http://192.168.1.{val}/'">内网设备</button>
-		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.google.com/search?q={val}'">谷歌搜索</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.google.com/search?q={val}'">Google</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://duckduckgo.com/?q={val}'">DuckDuckGo</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.bing.com/search?q={val}'">Bing</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://yandex.ru/search/?text={val}'">Yandex</button>
+
+
+			
 		  <button class="btn btn-sm mr-1 mb-1" onclick="pasteTo('prefix')">粘贴前缀</button>
 		  <button class="btn btn-sm btn-error mb-1" onclick="clearData('prefix')">清空前缀</button>
 		</div>
@@ -78,7 +84,7 @@
 
 		  <div class="column col-auto my-1">
 			<label class="form-checkbox" style="display:inline-block;margin-right:8px">
-			  <input type="checkbox" id="loopMode" checked>
+			  <input type="checkbox" id="loopMode"  checked onchange="toggleResetVisibility()">
 			  <i class="form-icon"></i> 循环
 			</label>
 			<label class="form-checkbox" style="display:inline-block;margin-right:8px">
