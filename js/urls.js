@@ -75,7 +75,7 @@ async function runTask() {
 	document.getElementById('stopBtn').style.display = 'inline-block';
 	
 	const isLoop = document.getElementById('loopMode').checked;
-	const prefix = document.getElementById('prefixInput').value;
+	const prefix = document.getElementById('prefixInput').value.trim();
 	const group = parseInt(document.getElementById('groupSize').value) || 0;
 	const delay = parseInt(document.getElementById('delayTime').value) || 0;
 	
@@ -84,14 +84,29 @@ async function runTask() {
 	for (let i = currentIdx; i < end; i++) {
 		if (!isTaskRunning) break;
 		let val = list[i];
-		let url = prefix.includes("{val}") ? prefix.replace("{val}", val) : val;
-		
-		if (!url.includes("://") && !prefix.includes("{val}")) {
-			url = (prefix ? (prefix.endsWith('/') ? prefix : prefix + '/') : '') + val;
-			if (!url.startsWith('http')) url = 'http://' + url;
+		let url = "";
+
+		// 核心修复逻辑：
+		if (prefix !== "") {
+			// 如果前缀不为空，强制进行合并
+			if (prefix.includes("{val}")) {
+				url = prefix.replace("{val}", val);
+			} else {
+				// 如果前缀里没写{val}，则按 路径拼接 逻辑处理
+				url = prefix.endsWith('/') ? prefix + val : prefix + '/' + val;
+			}
+			// 确保合并后的结果有协议头
+			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
+		} else {
+			// 只有当前缀为空时，才把内容当做独立网址
+			url = val;
+			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
 		}
 
-		if (document.getElementById('closePrev').checked && lastActiveTab) lastActiveTab.close();
+		if (document.getElementById('closePrev').checked && lastActiveTab) {
+			try { lastActiveTab.close(); } catch(e) {}
+		}
+
 		try {
 			let win = window.open(url, "_blank");
 			if (win) { openedTabs.push(win); lastActiveTab = win; }
@@ -121,8 +136,9 @@ function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); ope
 function saveData() { localStorage.setItem('pei_prefix', document.getElementById('prefixInput').value); }
 
 function setExample() { 
-	document.getElementById('prefixInput').value = ""; 
-	document.getElementById('mainInput').value = "192.168.1.1\nbaidu.com\nbing.com";
+	document.getElementById('prefixInput').value = "https://www.baidu.com/s?wd={val}"; 
+	document.getElementById('mainInput').value = "192.168.1.1\nhttps://www.baidu.com/\nhttps://bing.com";
+	currentIdx = 0;
 	updateStats();
 	addLog("载入测试样例数据");
 }
