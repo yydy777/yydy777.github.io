@@ -11,8 +11,6 @@
             --red: #ff0000; 
             --gray: #f2f2f2; 
             --border: #dcdfe6; 
-			
-
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,31 +18,27 @@
         .container { max-width: 1100px; margin: 0 auto; background: var(--white); padding: 12px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
         .section-label { font-size: 16px; font-weight: bold; margin: 5px 0; display: block; }
-        #prefixInput { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px;; outline: none; margin-bottom: 5px; }
+        #prefixInput { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px; outline: none; margin-bottom: 5px; }
         
-        /* 标签与按钮基础 */
         .tag-group { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 5px; align-items: center; }
         .tag { padding: 4px 10px; background: var(--white); border: 1px solid var(--border); border-radius: 4px; font-size: 14px; cursor: pointer; white-space: nowrap; transition: 0.2s; user-select: none; color: var(--black); }
         .tag:hover { background: var(--black); color: var(--white); }
         
-        /* 状态按钮 */
         .btn-main { background: var(--black) !important; color: var(--white) !important; font-weight: bold; }
         .btn-danger { background: var(--red) !important; border-color: var(--red) !important; color: var(--white) !important; }
         .btn-danger:hover { opacity: 0.8; }
 
-        /* 工具栏 */
         .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; background: #fafafa; padding: 5px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 5px; }
         .tool-item { display: flex; align-items: center; gap: 4px; font-size: 14px; }
         .input-num { width: 45px; padding: 1px; border: 1px solid var(--border); border-radius: 4px; text-align: center; }
         .check-item { cursor: pointer; display: flex; align-items: center; gap: 2px; }
 
-        textarea { width: 100%; height: 220px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 14px;; margin-bottom: 5px; outline: none; display: block; }
+        textarea { width: 100%; height: 220px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 14px; margin-bottom: 5px; outline: none; display: block; }
 
-        /* 统计卡片 */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 5px; }
         .stat-card { background: var(--white); border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
         .stat-label { font-size: 11px; color: #666; }
-        .stat-val { font-size: 14px;; font-weight: bold; }
+        .stat-val { font-size: 14px; font-weight: bold; }
 
         .progress-bar { width: 100%; height: 6px; background: #eee; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
         .progress-fill { height: 100%; background: var(--black); width: 0%; transition: width 0.3s; }
@@ -59,7 +53,7 @@
 <body>
 
 <div class="container">
-	<h1>批量打开网址工具</h1>
+    <h1>批量打开网址工具</h1>
     <div class="prefix-card">
         <label class="section-label">前缀配置</label>
         <input type="text" id="prefixInput" placeholder="例如：http://192.168.1.{val}/" oninput="saveData()">
@@ -71,11 +65,7 @@
             <div class="tag" data-url="https://www.bing.com/search?q={val}">Bing</div>
             <div class="tag" data-url="https://yandex.ru/search/?text={val}">Yandex</div>
 			
-			
             <div class="tag" onclick="pasteTo('prefix')">粘贴前缀</div>
-			
-			
-			
             <div class="tag btn-danger" onclick="clearData('prefix')">清空前缀</div>
         </div>
     </div>
@@ -91,7 +81,9 @@
         <div class="tag-group" style="margin-bottom:0">
             <div class="tag btn-main" onclick="setExample()">示例</div>
             <div class="tag btn-main" onclick="copyContent()">复制</div>
-            <div class="tag btn-main" onclick="formatContent()">整理</div>
+            <div class="tag btn-main" onclick="removeDuplicates()">去重</div>
+            <div class="tag btn-main" onclick="formatContent()">格式化</div>
+            <div class="tag btn-main" onclick="undoAction()">撤销</div>
         </div>
     </div>
 
@@ -123,10 +115,30 @@
     let lastActiveTab = null;
     let currentIdx = 0;
 
+    // --- 支持撤销的赋值函数 ---
+    function updateInputWithUndo(text) {
+        const input = document.getElementById('mainInput');
+        input.focus();
+        input.setSelectionRange(0, input.value.length);
+        const success = document.execCommand('insertText', false, text);
+        if (!success) {
+            input.value = text;
+        }
+    }
+
+    // --- 撤销功能 ---
+    function undoAction() {
+        const input = document.getElementById('mainInput');
+        input.focus();
+        document.execCommand('undo', false, null);
+        updateStats();
+        addLog("已执行撤销操作");
+    }
+
     function initTags() {
         document.querySelectorAll('.tag[data-url]').forEach(tag => {
             tag.addEventListener('click', function() {
-                document.getElementById('prefixInput').value = this.getAttribute('data-url');
+                document.getElementById('prefixInput').value = tag.getAttribute('data-url');
                 saveData();
             });
         });
@@ -139,32 +151,51 @@
                 document.getElementById('prefixInput').value = text;
                 saveData();
             } else {
-                document.getElementById('mainInput').value = text;
+                updateInputWithUndo(text);
                 resetProgress();
             }
-            addLog(`已同步剪贴板内容到${target === 'prefix' ? '前缀' : '主体'}`);
+            addLog(`已粘贴内容到${target === 'prefix' ? '前缀' : '主体'}`);
         } catch (err) {
             alert("无法访问剪贴板，请手动粘贴。");
         }
     }
 
+    // --- 去重功能 ---
+    function removeDuplicates(isSilent = false) {
+        const list = getList();
+        if (list.length === 0) return;
+        const newList = [...new Set(list)];
+        const newText = newList.join('\n');
+        
+        if (newText !== document.getElementById('mainInput').value.trim()) {
+            updateInputWithUndo(newText);
+        }
+        
+        updateStats();
+        if (!isSilent) addLog("去重整理完成");
+    }
+
+    // --- 格式化功能：已去掉前缀限制，强制执行 ---
     function formatContent() {
-        const prefix = document.getElementById('prefixInput').value.trim();
         let list = getList();
         if (list.length === 0) return;
-        list = [...new Set(list)];
-        if (!prefix) {
-            list = list.map(item => {
-                let url = item;
-                if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
-                if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) url = url + '/';
-                return url;
-            });
-            addLog("完成标准化格式处理");
-        } else {
-            addLog("完成数据去重处理");
-        }
-        document.getElementById('mainInput').value = list.join('\n');
+
+        // 强制对每一行进行网址补全处理
+        const formattedList = list.map(item => {
+            let url = item;
+            // 补全协议头
+            if (!url.startsWith('http') && !url.startsWith('//')) {
+                url = 'http://' + url;
+            }
+            // 补全尾部斜杠（如果不含参数或锚点）
+            if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) {
+                url = url + '/';
+            }
+            return url;
+        });
+
+        updateInputWithUndo(formattedList.join('\n'));
+        addLog("内容格式化处理完成（已强制补全协议与斜杠）");
         updateStats();
     }
 
@@ -183,10 +214,18 @@
         document.getElementById('progressFill').style.width = percent + "%";
     }
 
-    function getList() { return document.getElementById('mainInput').value.split('\n').map(s => s.trim()).filter(Boolean); }
+    function getList() { 
+        return document.getElementById('mainInput').value.split('\n')
+               .map(s => s.trim())
+               .filter(Boolean); 
+    }
 
     async function runTask() {
         if (isTaskRunning) return;
+        
+        // 任务开始前自动去重
+        removeDuplicates(true); 
+        
         const list = getList();
         if (!list.length) { addLog("错误：未检测到有效数据"); return; }
         
@@ -205,19 +244,14 @@
             let val = list[i];
             let url = "";
 
-            // 核心修复逻辑：
             if (prefix !== "") {
-                // 如果前缀不为空，强制进行合并
                 if (prefix.includes("{val}")) {
                     url = prefix.replace("{val}", val);
                 } else {
-                    // 如果前缀里没写{val}，则按 路径拼接 逻辑处理
                     url = prefix.endsWith('/') ? prefix + val : prefix + '/' + val;
                 }
-                // 确保合并后的结果有协议头
                 if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
             } else {
-                // 只有当前缀为空时，才把内容当做独立网址
                 url = val;
                 if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
             }
@@ -229,7 +263,7 @@
             try {
                 let win = window.open(url, "_blank");
                 if (win) { openedTabs.push(win); lastActiveTab = win; }
-            } catch (e) { addLog("弹窗拦截，请检查权限"); }
+            } catch (e) { addLog("窗口被拦截，请允许弹出窗口"); }
             
             currentIdx = i + 1;
             updateStats();
@@ -240,29 +274,38 @@
         isTaskRunning = false;
         document.getElementById('stopBtn').style.display = 'none';
         updateStats();
-        addLog("任务当前阶段已完成");
+        addLog("批量操作完成");
     }
 
     function clearData(type) {
-        if (type === 'prefix') { document.getElementById('prefixInput').value = ""; saveData(); }
-        else { document.getElementById('mainInput').value = ""; currentIdx = 0; updateStats(); }
+        if (type === 'prefix') { 
+            document.getElementById('prefixInput').value = ""; 
+            saveData(); 
+        } else { 
+            updateInputWithUndo("");
+            currentIdx = 0; 
+            updateStats(); 
+        }
         addLog(`已清空${type === 'prefix' ? '前缀' : '内容'}`);
     }
 
-    function resetProgress() { currentIdx = 0; updateStats(); addLog("进度归零"); }
-    function stopTask() { isTaskRunning = false; addLog("已人工停止运行"); }
-    function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已执行强制关窗"); }
+    function resetProgress() { currentIdx = 0; updateStats(); addLog("进度已重置"); }
+    function stopTask() { isTaskRunning = false; addLog("已停止运行"); }
+    function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已关闭已开页面"); }
     function saveData() { localStorage.setItem('pei_prefix', document.getElementById('prefixInput').value); }
     
     function setExample() { 
         document.getElementById('prefixInput').value = "https://www.baidu.com/s?wd={val}"; 
-        document.getElementById('mainInput').value = "192.168.1.1\nhttps://www.baidu.com/\nhttps://bing.com";
+        updateInputWithUndo("123\n爬虫\nPython");
         currentIdx = 0;
         updateStats();
-        addLog("载入测试样例数据");
+        addLog("已载入测试数据");
     }
     
-    async function copyContent() { await navigator.clipboard.writeText(document.getElementById('mainInput').value); addLog("内容已复制到剪切板"); }
+    async function copyContent() { 
+        await navigator.clipboard.writeText(document.getElementById('mainInput').value); 
+        addLog("内容已复制到剪贴板"); 
+    }
 
     function addLog(msg) {
         const area = document.getElementById('logArea');
@@ -279,6 +322,8 @@
         updateStats();
     };
 </script>
+
+
 
 </body>
 </html>
