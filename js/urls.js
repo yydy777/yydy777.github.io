@@ -1,56 +1,145 @@
-function openWebsites() {  
-  var prefixInput = document.getElementById("prefixInput").value;  
-  var websitesInput = document.getElementById("websitesInput").value;  
-  var websites = websitesInput.split("\n").filter(Boolean).map(function(url) {  
-    return url.replace(/^\s+/g, ""); // 去除每一行开头的空格  
-  });  
-  var windowArray = [];  
-  
-  for (var i = 0; i < websites.length; i++) {  
-    var url = websites[i];  
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {  
-      if (prefixInput === "") {  
-        // 如果前缀为空，自动添加http://协议到输入框内容中  
-        url = "http://" + url;  
-      } else {  
-        // 如果前缀不为空，将前缀和协议添加到URL中  
-        if (!prefixInput.startsWith("http://") && !prefixInput.startsWith("https://")) {  
-          url = "http://" + prefixInput + url; // 添加http://协议和前缀  
-        } else {  
-          url = prefixInput + url; // 仅使用前缀，不添加协议  
-        }  
-      }  
-    }  
-    var newWindow = window.open(url);  
-    windowArray.push(newWindow);  
-  }  
+
+let isTaskRunning = false;
+let openedTabs = [];
+let lastActiveTab = null;
+let currentIdx = 0;
+
+function initTags() {
+	document.querySelectorAll('.tag[data-url]').forEach(tag => {
+		tag.addEventListener('click', function() {
+			document.getElementById('prefixInput').value = this.getAttribute('data-url');
+			saveData();
+		});
+	});
 }
 
-function clearInput() {
-	document.getElementById("websitesInput").value = ""; // 清空输入框内容
-}
-  function clearPrefix() {
-	document.getElementById("prefixInput").value = ""; // 清空前缀内容
+async function pasteTo(target) {
+	try {
+		const text = await navigator.clipboard.readText();
+		if (target === 'prefix') {
+			document.getElementById('prefixInput').value = text;
+			saveData();
+		} else {
+			document.getElementById('mainInput').value = text;
+			resetProgress();
+		}
+		addLog(`已同步剪贴板内容到${target === 'prefix' ? '前缀' : '主体'}`);
+	} catch (err) {
+		alert("无法访问剪贴板，请手动粘贴。");
+	}
 }
 
-// 剪切板粘贴到内容框
-document.getElementById('webButton').addEventListener('click', async () => {  
-	try {  
-		const text = await navigator.clipboard.readText();  
-		document.getElementById('websitesInput').value = text;  
-		console.log('粘贴成功！');  
-	} catch (err) {  
-		console.error('粘贴失败：', err);  
-	}  
-});  
+function formatContent() {
+	const prefix = document.getElementById('prefixInput').value.trim();
+	let list = getList();
+	if (list.length === 0) return;
+	list = [...new Set(list)];
+	if (!prefix) {
+		list = list.map(item => {
+			let url = item;
+			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
+			if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) url = url + '/';
+			return url;
+		});
+		addLog("完成标准化格式处理");
+	} else {
+		addLog("完成数据去重处理");
+	}
+	document.getElementById('mainInput').value = list.join('\n');
+	updateStats();
+}
 
-// 点击按钮将按钮value传入输入框
-// 为每个按钮添加点击事件监听器  
-function handleButtonClick(event) {  
-	// 获取输入框元素  
-	var input = document.getElementById('prefixInput');  
+function toggleResetVisibility() {
+	const isLoop = document.getElementById('loopMode').checked;
+	document.getElementById('resetBtn').style.display = isLoop ? 'none' : 'inline-block';
+}
+
+function updateStats() {
+	const list = getList();
+	const total = list.length;
+	const percent = total > 0 ? Math.round((currentIdx / total) * 100) : 0;
+	document.getElementById('valTotal').innerText = total;
+	document.getElementById('valCurrent').innerText = currentIdx;
+	document.getElementById('valPercent').innerText = percent + "%";
+	document.getElementById('progressFill').style.width = percent + "%";
+}
+
+function getList() { return document.getElementById('mainInput').value.split('\n').map(s => s.trim()).filter(Boolean); }
+
+async function runTask() {
+	if (isTaskRunning) return;
+	const list = getList();
+	if (!list.length) { addLog("错误：未检测到有效数据"); return; }
+	
+	isTaskRunning = true;
+	document.getElementById('stopBtn').style.display = 'inline-block';
+	
+	const isLoop = document.getElementById('loopMode').checked;
+	const prefix = document.getElementById('prefixInput').value;
+	const group = parseInt(document.getElementById('groupSize').value) || 0;
+	const delay = parseInt(document.getElementById('delayTime').value) || 0;
+	
+	let end = (group > 0) ? Math.min(currentIdx + group, list.length) : list.length;
+	
+	for (let i = currentIdx; i < end; i++) {
+		if (!isTaskRunning) break;
+		let val = list[i];
+		let url = prefix.includes("{val}") ? prefix.replace("{val}", val) : val;
 		
-	// 将按钮的value属性值设置为输入框的值  
-	input.value = event.target.value;  
-}  
+		if (!url.includes("://") && !prefix.includes("{val}")) {
+			url = (prefix ? (prefix.endsWith('/') ? prefix : prefix + '/') : '') + val;
+			if (!url.startsWith('http')) url = 'http://' + url;
+		}
 
+		if (document.getElementById('closePrev').checked && lastActiveTab) lastActiveTab.close();
+		try {
+			let win = window.open(url, "_blank");
+			if (win) { openedTabs.push(win); lastActiveTab = win; }
+		} catch (e) { addLog("弹窗拦截，请检查权限"); }
+		
+		currentIdx = i + 1;
+		updateStats();
+		if (delay > 0 && i < end - 1) await new Promise(r => setTimeout(r, delay));
+	}
+	
+	if (currentIdx >= list.length && isLoop) currentIdx = 0;
+	isTaskRunning = false;
+	document.getElementById('stopBtn').style.display = 'none';
+	updateStats();
+	addLog("任务当前阶段已完成");
+}
+
+function clearData(type) {
+	if (type === 'prefix') { document.getElementById('prefixInput').value = ""; saveData(); }
+	else { document.getElementById('mainInput').value = ""; currentIdx = 0; updateStats(); }
+	addLog(`已清空${type === 'prefix' ? '前缀' : '内容'}`);
+}
+
+function resetProgress() { currentIdx = 0; updateStats(); addLog("进度归零"); }
+function stopTask() { isTaskRunning = false; addLog("已人工停止运行"); }
+function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已执行强制关窗"); }
+function saveData() { localStorage.setItem('pei_prefix', document.getElementById('prefixInput').value); }
+
+function setExample() { 
+	document.getElementById('prefixInput').value = ""; 
+	document.getElementById('mainInput').value = "192.168.1.1\nbaidu.com\nbing.com";
+	updateStats();
+	addLog("载入测试样例数据");
+}
+
+async function copyContent() { await navigator.clipboard.writeText(document.getElementById('mainInput').value); addLog("内容已复制到剪切板"); }
+
+function addLog(msg) {
+	const area = document.getElementById('logArea');
+	const div = document.createElement('div');
+	div.innerHTML = `> [${new Date().toLocaleTimeString()}] ${msg}`;
+	area.prepend(div);
+}
+
+window.onload = () => {
+	initTags();
+	const saved = localStorage.getItem('pei_prefix');
+	if (saved) document.getElementById('prefixInput').value = saved;
+	toggleResetVisibility();
+	updateStats();
+};
