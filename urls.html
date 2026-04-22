@@ -19,6 +19,9 @@
   <script src="template/sidebar.js"></script>
   <script src="template/footer.js"></script>
     <style>
+	
+        .section-label { font-size: 16px; font-weight: bold; margin-right: 5px;}
+
         .progress-bar { width: 100%; height: 6px; background: #eee; border: 1px solid #dcdfe6; border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
         .progress-fill { height: 100%; background: #000; width: 0%; transition: width 0.3s; }
     </style>
@@ -41,29 +44,31 @@
 
 		<div class="card-body">
 
+
+
+		<div class="my-2">
+		  <span class="section-label">前缀预设:</span>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='http://192.168.1.{val}/'">内网</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.google.com/search?q={val}'">Google</button>
+
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.bing.com/search?q={val}'">Bing</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://yandex.ru/search/?text={val}'">Yandex</button>
+		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://duckduckgo.com/?q={val}'">DuckDuckGo</button>
+
+			
+		  <button class="btn btn-sm mr-1 mb-1" onclick="pasteTo('prefix')">粘贴前缀</button>
+		  <button class="btn btn-sm btn-error mb-1" onclick="clearData('prefix')">清空前缀</button>
+		</div>
+		
 		<!-- 前缀输入 -->
 		<div class="form-group">
-		  <label class="form-label"><strong>URL 前缀</strong></label>
 		  <input 
 			type="text" 
 			id="prefixInput" 
 			class="form-input" 
 			placeholder="例如：http://192.168.1.{val}/">
 		</div>
-
-		<div class="my-2">
-		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='http://192.168.1.{val}/'">内网设备</button>
-		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.google.com/search?q={val}'">Google</button>
-		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://duckduckgo.com/?q={val}'">DuckDuckGo</button>
-		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://www.bing.com/search?q={val}'">Bing</button>
-		  <button class="btn btn-sm mr-1 mb-1" onclick="document.getElementById('prefixInput').value='https://yandex.ru/search/?text={val}'">Yandex</button>
-
-
-			
-		  <button class="btn btn-sm mr-1 mb-1" onclick="pasteTo('prefix')">粘贴前缀</button>
-		  <button class="btn btn-sm btn-error mb-1" onclick="clearData('prefix')">清空前缀</button>
-		</div>
-
+		
 		<div class="divider my-2"></div>
 
 		<!-- 工具栏：电脑端一行紧凑排列，小屏幕自动换行且不重叠 -->
@@ -123,11 +128,13 @@
 
 		<!-- 主按钮 (彻底解决重叠) -->
 		<div class="my-1">
+		  <span class="section-label">主体控制:</span>
 		  <button class="btn mr-1 mb-1" onclick="pasteTo('content')">粘贴内容</button>
 		  <button class="btn btn-error mr-1 mb-1" onclick="clearData('content')">清空内容</button>
 		  <button class="btn btn-primary mr-1 mb-1" id="startBtn" onclick="runTask()">批量打开</button>
-		  <button class="btn btn-error mr-1 mb-1" id="stopBtn" style="display:none" onclick="stopTask()">停止</button>
-		  <button class="btn mr-1 mb-1" id="resetBtn" style="display:none" onclick="resetProgress()">重置进度</button>
+
+		  <button class="btn mr-1 mb-1" onclick="location.reload()">刷新</button>
+		  <button class="btn mr-1 mb-1 btn-error" id="resetBtn" onclick="resetProgress()">重置进度</button>
 		  <button class="btn mb-1" onclick="closeTabs()">关闭已开标签</button>
 		</div>
 

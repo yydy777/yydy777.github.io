@@ -15,75 +15,83 @@
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--gray); padding: 8px; color: var(--black); }
-        .container { max-width: 1100px; margin: 0 auto; background: var(--white); padding: 12px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .container { max-width: 1200px; margin: 0 auto; background: var(--white); padding: 12px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        .section-label { font-size: 16px; font-weight: bold; margin: 5px 0; display: block; }
-        #prefixInput { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px; outline: none; margin-bottom: 5px; }
+        .section-label { font-size: 16px; font-weight: bold; display: block; margin-right: 5px;}
+
         
-        .tag-group { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 5px; align-items: center; }
-        .tag { padding: 4px 10px; background: var(--white); border: 1px solid var(--border); border-radius: 4px; font-size: 14px; cursor: pointer; white-space: nowrap; transition: 0.2s; user-select: none; color: var(--black); }
+        /* 前缀输入框独占一行 */
+        #prefixInput { 
+            width: 100%;
+            padding: 10px; 
+            border: 1px solid var(--border); 
+            border-radius: 4px; 
+            font-size: 14px; 
+            outline: none; 
+            margin-bottom: 10px;
+        }
+        
+        .tag-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-bottom: 15px; }
+        .tag { padding: 4px 10px; background: var(--white); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.2s; user-select: none; color: var(--black); }
         .tag:hover { background: var(--black); color: var(--white); }
         
         .btn-main { background: var(--black) !important; color: var(--white) !important; font-weight: bold; }
         .btn-danger { background: var(--red) !important; border-color: var(--red) !important; color: var(--white) !important; }
         .btn-danger:hover { opacity: 0.8; }
 
-        .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; background: #fafafa; padding: 5px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 5px; }
+        .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; background: #fafafa; padding: 8px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 10px; }
         .tool-item { display: flex; align-items: center; gap: 4px; font-size: 14px; }
-        .input-num { width: 45px; padding: 1px; border: 1px solid var(--border); border-radius: 4px; text-align: center; }
+        .input-num { width: 45px; padding: 2px; border: 1px solid var(--border); border-radius: 4px; text-align: center; }
         .check-item { cursor: pointer; display: flex; align-items: center; gap: 2px; }
 
-        textarea { width: 100%; height: 220px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 14px; margin-bottom: 5px; outline: none; display: block; }
+        textarea { width: 100%; height: 250px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 14px; margin-bottom: 10px; outline: none; display: block; resize: vertical; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 5px; }
-        .stat-card { background: var(--white); border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .stat-label { font-size: 11px; color: #666; }
-        .stat-val { font-size: 14px; font-weight: bold; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+        .stat-card { background: var(--white); border: 1px solid var(--border); padding: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .stat-label { font-size: 12px; color: #666; }
+        .stat-val { font-size: 15px; font-weight: bold; }
 
-        .progress-bar { width: 100%; height: 6px; background: #eee; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; margin-bottom: 10px; border: 1px solid #ddd; }
         .progress-fill { height: 100%; background: var(--black); width: 0%; transition: width 0.3s; }
 
-        .controls-group { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 5px; align-items: center; }
+        .controls-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; align-items: center; }
 
-        #logArea { background: var(--black); color: #fff; padding: 8px; border-radius: 4px; height: 80px; overflow-y: auto; font-size: 11px; font-family: monospace; }
-
-        @media (max-width: 600px) { .toolbar { gap: 8px; } }
+        #logArea { background: var(--black); color: #fff; padding: 10px; border-radius: 4px; height: 100px; overflow-y: auto; font-size: 12px; font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>批量打开网址工具</h1>
-    <div class="prefix-card">
-        <label class="section-label">前缀配置</label>
-        <input type="text" id="prefixInput" placeholder="例如：http://192.168.1.{val}/" oninput="saveData()">
-        
-        <div class="tag-group">
-            <div class="tag" data-url="http://192.168.1.{val}/">内网设备</div>
-            <div class="tag" data-url="https://www.google.com/search?q={val}">Google</div>
-            <div class="tag" data-url="https://duckduckgo.com/?q={val}">DuckDuckGo</div>
-            <div class="tag" data-url="https://www.bing.com/search?q={val}">Bing</div>
-            <div class="tag" data-url="https://yandex.ru/search/?text={val}">Yandex</div>
-			
-            <div class="tag" onclick="pasteTo('prefix')">粘贴前缀</div>
-            <div class="tag btn-danger" onclick="clearData('prefix')">清空前缀</div>
-        </div>
+    <div class="tag-group">
+        <span class="section-label">前缀预设:</span>
+        <div class="tag" data-url="http://192.168.1.{val}/">内网</div>
+        <div class="tag" data-url="https://www.google.com/search?q={val}">Google</div>
+
+        <div class="tag" data-url="https://www.bing.com/search?q={val}">Bing</div>
+        <div class="tag" data-url="https://yandex.ru/search/?text={val}">Yandex</div>
+		<div class="tag" data-url="https://duckduckgo.com/?q={val}">DuckDuckGo</div>
+        <div class="tag" onclick="pasteTo('prefix')">粘贴前缀</div>
+        <div class="tag btn-danger" onclick="clearData('prefix')">清空前缀</div>
     </div>
+	
+    <input type="text" id="prefixInput" placeholder="例如：http://192.168.1.{val}/" oninput="saveData()">
+    
+
 
     <div class="toolbar">
         <div class="tool-item"><span>分组</span><input type="number" id="groupSize" value="0" class="input-num"></div>
         <div class="tool-item"><span>间隔(ms)</span><input type="number" id="delayTime" value="0" class="input-num"></div>
         <div class="tool-item">
-            <label class="check-item"><input type="checkbox" id="loopMode" checked onchange="toggleResetVisibility()">循环</label>
+            <label class="check-item"><input type="checkbox" id="loopMode" checked>循环</label>
             <label class="check-item"><input type="checkbox" id="newWin">新窗</label>
             <label class="check-item"><input type="checkbox" id="closePrev">关旧开新</label>
         </div>
         <div class="tag-group" style="margin-bottom:0">
-            <div class="tag btn-main" onclick="setExample()">示例</div>
-            <div class="tag btn-main" onclick="copyContent()">复制</div>
+            <div class="tag btn-main" onclick="setExample()">示例数据</div>
+            <div class="tag btn-main" onclick="copyContent()">复制全部</div>
             <div class="tag btn-main" onclick="removeDuplicates()">去重</div>
-            <div class="tag btn-main" onclick="formatContent()">格式化</div>
-            <div class="tag btn-main" onclick="undoAction()">撤销</div>
+            <div class="tag btn-main" onclick="formatContent()">网址格式化</div>
+            <div class="tag btn-main" onclick="undoAction()" style="background:#444 !important;">撤销</div>
         </div>
     </div>
 
@@ -92,18 +100,21 @@
     <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
 
     <div class="controls-group">
-        <div class="tag" onclick="pasteTo('content')">粘贴内容</div>
-        <div class="tag btn-danger" onclick="clearData('content')">清空内容</div>
-        <div class="tag btn-main" id="startBtn" onclick="runTask()" style="padding: 4px 20px;">批量打开</div>
-        <div class="tag btn-danger" id="stopBtn" style="display:none;" onclick="stopTask()">停止</div>
-        <div class="tag" id="resetBtn" style="display:none;" onclick="resetProgress()">重置进度</div>
-        <div class="tag btn-main" onclick="closeTabs()">关闭已开标签</div>
+        <span class="section-label">主体控制:</span>
+        <div class="tag" onclick="pasteTo('content')">粘贴主体</div>
+
+
+        <div class="tag btn-danger" onclick="clearData('content')">清空主体</div>
+        <div class="tag btn-main" id="startBtn" onclick="runTask()"">批量打开网址</div>
+        <div class="tag" onclick="location.reload()">刷新</div>
+        <div class="tag btn-danger" id="resetBtn" style="display:none;" onclick="resetProgress()">重置进度</div>
+        <div class="tag btn-main" onclick="closeTabs()">关闭所有已开标签</div>
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">数据总量</div><div id="valTotal" class="stat-val">0</div></div>
-        <div class="stat-card"><div class="stat-label">当前索引</div><div id="valCurrent" class="stat-val">0</div></div>
-        <div class="stat-card"><div class="stat-label">进度</div><div id="valPercent" class="stat-val">0%</div></div>
+        <div class="stat-card"><div class="stat-label">总行数</div><div id="valTotal" class="stat-val">0</div></div>
+        <div class="stat-card"><div class="stat-label">已执行</div><div id="valCurrent" class="stat-val">0</div></div>
+        <div class="stat-card"><div class="stat-label">完成百分比</div><div id="valPercent" class="stat-val">0%</div></div>
     </div>
 
     <div id="logArea"></div>
@@ -115,24 +126,20 @@
     let lastActiveTab = null;
     let currentIdx = 0;
 
-    // --- 支持撤销的赋值函数 ---
     function updateInputWithUndo(text) {
         const input = document.getElementById('mainInput');
         input.focus();
         input.setSelectionRange(0, input.value.length);
         const success = document.execCommand('insertText', false, text);
-        if (!success) {
-            input.value = text;
-        }
+        if (!success) { input.value = text; }
     }
 
-    // --- 撤销功能 ---
     function undoAction() {
         const input = document.getElementById('mainInput');
         input.focus();
         document.execCommand('undo', false, null);
         updateStats();
-        addLog("已执行撤销操作");
+        addLog("已撤销上一步操作");
     }
 
     function initTags() {
@@ -154,84 +161,62 @@
                 updateInputWithUndo(text);
                 resetProgress();
             }
-            addLog(`已粘贴内容到${target === 'prefix' ? '前缀' : '主体'}`);
-        } catch (err) {
-            alert("无法访问剪贴板，请手动粘贴。");
-        }
+            addLog(`内容已粘贴至${target === 'prefix' ? '前缀' : '主体'}`);
+        } catch (err) { alert("剪贴板访问被拒绝"); }
     }
 
-    // --- 去重功能 ---
     function removeDuplicates(isSilent = false) {
         const list = getList();
         if (list.length === 0) return;
         const newList = [...new Set(list)];
         const newText = newList.join('\n');
-        
         if (newText !== document.getElementById('mainInput').value.trim()) {
             updateInputWithUndo(newText);
         }
-        
         updateStats();
-        if (!isSilent) addLog("去重整理完成");
+        if (!isSilent) addLog("数据去重整理完成");
     }
 
-    // --- 格式化功能：已去掉前缀限制，强制执行 ---
     function formatContent() {
         let list = getList();
         if (list.length === 0) return;
-
-        // 强制对每一行进行网址补全处理
-        const formattedList = list.map(item => {
+        const formatted = list.map(item => {
             let url = item;
-            // 补全协议头
-            if (!url.startsWith('http') && !url.startsWith('//')) {
-                url = 'http://' + url;
-            }
-            // 补全尾部斜杠（如果不含参数或锚点）
-            if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) {
-                url = url + '/';
-            }
+            if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
+            if (!url.endsWith('/') && !url.includes('?') && !url.includes('#')) url = url + '/';
             return url;
         });
-
-        updateInputWithUndo(formattedList.join('\n'));
-        addLog("内容格式化处理完成（已强制补全协议与斜杠）");
+        updateInputWithUndo(formatted.join('\n'));
+        addLog("网址格式化补全完成");
         updateStats();
-    }
-
-    function toggleResetVisibility() {
-        const isLoop = document.getElementById('loopMode').checked;
-        document.getElementById('resetBtn').style.display = isLoop ? 'none' : 'inline-block';
     }
 
     function updateStats() {
         const list = getList();
         const total = list.length;
         const percent = total > 0 ? Math.round((currentIdx / total) * 100) : 0;
+        
         document.getElementById('valTotal').innerText = total;
         document.getElementById('valCurrent').innerText = currentIdx;
         document.getElementById('valPercent').innerText = percent + "%";
         document.getElementById('progressFill').style.width = percent + "%";
+
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.style.display = currentIdx > 0 ? 'inline-block' : 'none';
     }
 
     function getList() { 
-        return document.getElementById('mainInput').value.split('\n')
-               .map(s => s.trim())
-               .filter(Boolean); 
+        return document.getElementById('mainInput').value.split('\n').map(s => s.trim()).filter(Boolean); 
     }
 
     async function runTask() {
         if (isTaskRunning) return;
-        
-        // 任务开始前自动去重
         removeDuplicates(true); 
-        
         const list = getList();
-        if (!list.length) { addLog("错误：未检测到有效数据"); return; }
+        if (!list.length) { addLog("无有效内容可打开"); return; }
         
         isTaskRunning = true;
-        document.getElementById('stopBtn').style.display = 'inline-block';
-        
+
         const isLoop = document.getElementById('loopMode').checked;
         const prefix = document.getElementById('prefixInput').value.trim();
         const group = parseInt(document.getElementById('groupSize').value) || 0;
@@ -242,20 +227,9 @@
         for (let i = currentIdx; i < end; i++) {
             if (!isTaskRunning) break;
             let val = list[i];
-            let url = "";
-
-            if (prefix !== "") {
-                if (prefix.includes("{val}")) {
-                    url = prefix.replace("{val}", val);
-                } else {
-                    // url = prefix.endsWith('/') ? prefix + val : prefix + '/' + val;
-                    url = prefix + val;
-                }
-                if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
-            } else {
-                url = val;
-                if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
-            }
+            let url = prefix !== "" ? (prefix.includes("{val}") ? prefix.replace("{val}", val) : prefix + val) : val;
+            
+            if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
 
             if (document.getElementById('closePrev').checked && lastActiveTab) {
                 try { lastActiveTab.close(); } catch(e) {}
@@ -264,7 +238,7 @@
             try {
                 let win = window.open(url, "_blank");
                 if (win) { openedTabs.push(win); lastActiveTab = win; }
-            } catch (e) { addLog("窗口被拦截，请允许弹出窗口"); }
+            } catch (e) { addLog("窗口被浏览器拦截"); }
             
             currentIdx = i + 1;
             updateStats();
@@ -273,9 +247,9 @@
         
         if (currentIdx >= list.length && isLoop) currentIdx = 0;
         isTaskRunning = false;
-        document.getElementById('stopBtn').style.display = 'none';
+
         updateStats();
-        addLog("批量操作完成");
+        addLog("批量操作结束");
     }
 
     function clearData(type) {
@@ -283,29 +257,29 @@
             document.getElementById('prefixInput').value = ""; 
             saveData(); 
         } else { 
-            updateInputWithUndo("");
+            updateInputWithUndo(""); 
             currentIdx = 0; 
             updateStats(); 
         }
-        addLog(`已清空${type === 'prefix' ? '前缀' : '内容'}`);
+        addLog(`已清空${type === 'prefix' ? '前缀' : '主体'}`);
     }
 
     function resetProgress() { currentIdx = 0; updateStats(); addLog("进度已重置"); }
-    function stopTask() { isTaskRunning = false; addLog("已停止运行"); }
-    function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已关闭已开页面"); }
+
+    function closeTabs() { openedTabs.forEach(t => t && !t.closed && t.close()); openedTabs = []; addLog("已关闭标签页"); }
     function saveData() { localStorage.setItem('pei_prefix', document.getElementById('prefixInput').value); }
     
     function setExample() { 
         document.getElementById('prefixInput').value = "https://www.baidu.com/s?wd={val}"; 
-        updateInputWithUndo("123\n爬虫\nPython");
+		updateInputWithUndo("Python\n123\n爬虫");
         currentIdx = 0;
         updateStats();
-        addLog("已载入测试数据");
+        addLog("载入示例数据");
     }
     
     async function copyContent() { 
         await navigator.clipboard.writeText(document.getElementById('mainInput').value); 
-        addLog("内容已复制到剪贴板"); 
+        addLog("内容已复制"); 
     }
 
     function addLog(msg) {
@@ -319,11 +293,9 @@
         initTags();
         const saved = localStorage.getItem('pei_prefix');
         if (saved) document.getElementById('prefixInput').value = saved;
-        toggleResetVisibility();
         updateStats();
     };
 </script>
-
 
 
 </body>
