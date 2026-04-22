@@ -137,7 +137,8 @@ async function runTask() {
 			if (prefix.includes("{val}")) {
 				url = prefix.replace("{val}", val);
 			} else {
-				url = prefix.endsWith('/') ? prefix + val : prefix + '/' + val;
+				// url = prefix.endsWith('/') ? prefix + val : prefix + '/' + val;
+				url = prefix + val;
 			}
 			if (!url.startsWith('http') && !url.startsWith('//')) url = 'http://' + url;
 		} else {
