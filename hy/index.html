@@ -1,194 +1,503 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>553313.xyz - 站点防失联地址</title>
+    <title>553313 - 站点防失联发布页</title>
     <style>
+        /* 全局极简紧凑重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
-            /* 升级为现代化渐变背景 */
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            background-color: #fafbfc;
+            color: #1e293b;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 12px;
         }
 
-        .card {
-            background: #ffffff;
+        .container {
             width: 100%;
-            max-width: 480px; /* 适当缩窄，结构更紧凑平衡 */
-            padding: 48px 40px;
-            border-radius: 24px;
-            /* 更细腻的多层阴影，增加高级悬浮感 */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
-                        0 20px 40px -1px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 
-                        0 28px 50px -1px rgba(0, 0, 0, 0.12);
-        }
-
-        .title {
-            font-size: 26px;
-            font-weight: 700;
-            color: #1f2937;
-            text-align: center;
-            margin-bottom: 40px;
-            letter-spacing: 1px;
+            max-width: 540px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px 28px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 10px 25px -10px rgba(0, 0, 0, 0.04);
             position: relative;
         }
 
-        /* 标题下方增加小装饰线 */
-        .title::after {
-            content: '';
-            display: block;
-            width: 40px;
-            height: 4px;
-            background: #2563eb;
-            border-radius: 2px;
-            margin: 12px auto 0;
-        }
-
-        .item {
-            margin-bottom: 32px;
-            padding-bottom: 32px;
-            border-bottom: 1px dashed #e5e7eb; /* 改为虚线，更显精致 */
+        /* 头部轻量化 */
+        .header {
             text-align: center;
-        }
-
-        .item:last-of-type {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .item h3 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #4b5563;
             margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        /* 移到上方的收藏提示（优化样式使其更融入头部） */
+        .top-footer-tip {
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: table;
+            margin: 0 auto 14px auto;
+            font-weight: 500;
+        }
+
+        /* 移到上方的更新机制底座（紧凑微调） */
+        .info-card {
+            background: #f8fafc;
+            border: 1px dashed #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .info-label {
+            color: #475569;
+            width: 66px;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #64748b;
+        }
+
+        /* 强化的显眼邮箱专区 */
+        .email-banner {
+            background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .email-banner:hover {
+            border-color: #7dd3fc;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .email-banner:active {
+            transform: translateY(0);
+        }
+        
+        .email-info h2 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #0369a1;
+            letter-spacing: 0.05em;
+            margin-bottom: 1px;
+        }
+
+        .email-info .email-address {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1d4ed8;
+            font-family: ui-monospace, Consolas, monospace;
+        }
+
+        .email-action {
+            display: flex;
+            align-items: center;
             gap: 6px;
         }
 
-        /* 为标题加上轻量的小前缀装饰 */
-        .item h3::before {
-            content: '✦';
-            color: #2563eb;
-            font-size: 12px;
-        }
-
-        .link-text {
-            font-size: 15px;
-            color: #0d9488; /* 替换为更有高级感的极光青色 */
-            word-break: break-all;
-            margin-bottom: 16px;
-            line-height: 1.6;
-            font-weight: 600;
-            background: #f0fdfa; /* 增加文字背景衬托 */
-            padding: 8px 12px;
-            border-radius: 8px;
-            display: inline-block;
-            max-width: 100%;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 36px;
-            background-color: #2563eb;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 10px;
-            font-size: 14px;
+        .email-tag {
+            font-size: 11px;
+            background: #2563eb;
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 6px;
             font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: none;
+        }
+
+        /* 模块小标题 */
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            padding-left: 2px;
+        }
+
+        /* 紧凑型线路列表 */
+        .address-list {
+            margin-bottom: 4px; /* 触底优化 */
+        }
+
+        .address-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+        }
+
+        .address-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-left {
+            flex: 1;
+            padding-right: 12px;
             cursor: pointer;
-            letter-spacing: 0.5px;
+        }
+
+        .address-item:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .meta-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+            pointer-events: none;
+        }
+
+        .item-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        /* 状态微标签 */
+        .badge {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 0px 5px;
+            border-radius: 4px;
+            line-height: 1.4;
+        }
+
+        .badge-active {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .badge-blocked {
+            background-color: #fff7ed;
+            color: #ea580c;
+            border: 1px solid #fed7aa;
+        }
+
+        .badge-deprecated {
+            background-color: #f8fafc;
+            color: #94a3b8;
+            border: 1px solid #cbd5e1;
+        }
+
+        .url-text {
+            font-size: 12.5px;
+            color: #475569;
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            word-break: break-all;
+            line-height: 1.3;
+            pointer-events: none;
+        }
+
+        .url-tip {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 1px;
+            font-weight: 400;
+            pointer-events: none;
+        }
+
+        /* 紧凑型按钮 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #0f172a;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.15s ease;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
         }
 
         .btn:hover {
-            background-color: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            background-color: #1e293b;
         }
 
-        .btn:active {
-            transform: translateY(0);
+        .btn-disabled {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            pointer-events: none; 
         }
 
-        .email-text {
-            font-size: 15px;
-            color: #1f2937;
-            font-weight: 600;
-            word-break: break-all;
-            line-height: 1.6;
-            background: #f9fafb;
-            padding: 8px 20px;
+        /* 吐司提示框样式 */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(15, 23, 42, 0.9);
+            color: #ffffff;
+            padding: 8px 16px;
             border-radius: 8px;
-            display: inline-block;
-            border: 1px solid #f3f4f6;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
-        .tip {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 13px;
-            color: #9ca3af;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-        
-        .tip::before {
-            content: '💡';
+        @media (max-width: 480px) {
+            .container {
+                padding: 18px 16px;
+            }
+            .address-item {
+                padding: 10px 12px;
+            }
+            .url-text {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2 class="title">站点防失联通道</h2>
 
-        <div class="item">
-            <h3>官方主站地址</h3>
-            <p class="link-text">https://553313.xyz/</p>
-            <div>
-                <a href="https://553313.xyz/" target="_blank" class="btn">访问官网</a>
+    <div class="container">
+        <!-- 头部区 -->
+        <div class="header">
+            <h1>553313 - 站点网络发布页</h1>
+        </div>
+
+
+
+        <!-- 【优化移至上方】技术机制底座 -->
+        <div class="info-card">
+            <div class="info-row">
+                <span class="info-label">更新机制</span>
+                <span class="info-value">遭遇极端网络波动时，新域名将在24小时内在此页面自动指引同步。</span>
+            </div>
+        </div>
+        
+        <!-- 【优化移至上方】页脚收藏提示（胶囊状精美样式） -->
+        <div class="top-footer-tip">
+            💡 建议按下 Ctrl + D 收藏本页 · 保持常态互联
+        </div>
+        
+        <!-- 核心邮箱挂件 -->
+        <div class="email-banner" onclick="handleEmailClick('yydy777@gmail.com')">
+            <div class="email-info">
+                <h2>失联应急联络信箱 (点击复制并联系)</h2>
+                <div class="email-address">yydy777@gmail.com</div>
+            </div>
+            <div class="email-action">
+                <div class="email-tag">终身有效</div>
             </div>
         </div>
 
-        <div class="item">
-            <h3>防失联备用地址</h3>
-            <p class="link-text">https://yydy777.netlify.app/hy/index.html</p>
-            <div>
-                <a href="https://yydy777.netlify.app/hy/index.html" target="_blank" class="btn">立即访问</a>
+        <!-- 线路状态区 -->
+        <div class="section-title">官方线路（点击空白区域可复制网址）</div>
+        <div class="address-list">
+            
+            <!-- 节点 1 -->
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('https://553313.xyz/')">
+                    <div class="meta-line">
+                        <span class="item-name">官方主站</span>
+                        <span class="badge badge-active">正常运行</span>
+                    </div>
+                    <div class="url-text">https://553313.xyz/</div>
+                </div>
+                <a href="https://553313.xyz/" target="_blank" class="btn">立即访问</a>
             </div>
-        </div>
 
-        <div class="item">
-            <h3>联系邮箱</h3>
-            <p class="email-text">yydy777@gmail.com</p>
-        </div>
+            <!-- 节点 2 -->
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('http://553313.p8.ink/')">
+                    <div class="meta-line">
+                        <span class="item-name">官方备用 A</span>
+                        <span class="badge badge-active">正常运行</span>
+                    </div>
+                    <div class="url-text">http://553313.p8.ink/</div>
+                </div>
+                <a href="http://553313.p8.ink/" target="_blank" class="btn">立即访问</a>
+            </div>
 
-        <p class="tip">建议收藏本页面，避免站点丢失无法访问</p>
+            <!-- 节点 3 -->
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('http://553313.gov.eu.cc/')">
+                    <div class="meta-line">
+                        <span class="item-name">官方备用 B</span>
+                        <span class="badge badge-active">正常运行</span>
+                    </div>
+                    <div class="url-text">http://553313.gov.eu.cc/</div>
+                </div>
+                <a href="http://553313.gov.eu.cc/" target="_blank" class="btn">立即访问</a>
+            </div>
+
+            <!-- 节点 4 -->
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('https://1.553313.xyz/')">
+                    <div class="meta-line">
+                        <span class="item-name">数字轮询节点 A</span>
+                        <span class="badge badge-active">正常运行</span>
+                    </div>
+                    <div class="url-text">https://1.553313.xyz/</div>
+                    <div class="url-tip">💡 无法访问时可尝试手动修改“1”为 1-100 之间的任意数字</div>
+                </div>
+                <a href="https://1.553313.xyz/" target="_blank" class="btn">立即访问</a>
+            </div>
+
+            <!-- 节点 5 -->
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('https://hy.553313.xyz/')">
+                    <div class="meta-line">
+                        <span class="item-name">数字轮询节点 B</span>
+                        <span class="badge badge-active">正常运行</span>
+                    </div>
+                    <div class="url-text">https://hy1.553313.xyz/</div>
+                    <div class="url-tip">💡 无法访问时可尝试手动修改“hy1”为 1-100 之间的任意数字</div>
+                </div>
+                <a href="https://hy1.553313.xyz/" target="_blank" class="btn">立即访问</a>
+            </div>
+
+            <!-- 节点 6 -->
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('https://yydy777.netlify.app/hy/')">
+                    <div class="meta-line">
+                        <span class="item-name">站点防失联发布页</span>
+                        <span class="badge badge-active">正常运行</span>
+                    </div>
+                    <div class="url-text">https://yydy777.netlify.app/hy/</div>
+                </div>
+                <a href="https://yydy777.netlify.app/hy/" target="_blank" class="btn">立即访问</a>
+            </div>
+
+
+            <!-- 注释
+
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('https://yydy777-china.pages.dev/')">
+                    <div class="meta-line">
+                        <span class="item-name">内网特定加速通道</span>
+                        <span class="badge badge-blocked">局部受限</span>
+                    </div>
+                    <div class="url-text">https://yydy777-china.pages.dev/</div>
+                </div>
+                <a href="#" class="btn btn-disabled">无法直连</a>
+            </div>
+
+
+            <div class="address-item">
+                <div class="item-left" onclick="copyText('https://old.553313.xyz/')">
+                    <div class="meta-line">
+                        <span class="item-name">旧版遗留节点</span>
+                        <span class="badge badge-deprecated">已弃用</span>
+                    </div>
+                    <div class="url-text">https://old.553313.xyz/</div>
+                </div>
+                <a href="#" class="btn btn-disabled">停止维护</a>
+            </div>
+            -->
+
+        </div>
     </div>
+
+    <!-- 动态全局弹窗提示 -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // 统一复制函数
+        function execCopy(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed'; 
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('复制失败', err);
+                }
+                document.body.removeChild(textarea);
+                return Promise.resolve();
+            }
+        }
+
+        // 显示浮窗提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1800);
+        }
+
+        // 处理邮箱点击：复制地址并拉起邮件客户端
+        function handleEmailClick(email) {
+            execCopy(email).then(() => {
+                showToast('📬 邮箱已复制，正在打开邮件客户端...');
+                setTimeout(() => {
+                    window.location.href = 'mailto:' + email;
+                }, 200);
+            });
+        }
+
+        // 处理网址非按钮区的复制点击
+        function copyText(url) {
+            execCopy(url).then(() => {
+                showToast('📋 网址已成功复制到剪贴板');
+            });
+        }
+    </script>
 </body>
 </html>
