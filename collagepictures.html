@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片排版合并工具</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            min-height: 100vh;
+            padding: 68px 20px 20px;
+        }
+        .header { text-align: center; margin-bottom: 24px; }
+        .header h1 { font-size: 26px; color: #222; margin-bottom: 6px; font-weight: 600; }
+        .header p { font-size: 14px; color: #666; }
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            background: #fff;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #999;
+            background: #fafafa;
+        }
+        .drop-zone .icon { font-size: 40px; margin-bottom: 8px; }
+        .drop-zone p { font-size: 15px; color: #888; }
+        .drop-zone input { display: none; }
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(245, 245, 245, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 10px 20px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            background: #fff;
+            color: #333;
+        }
+        .btn:hover { background: #f0f0f0; border-color: #bbb; }
+        .btn-primary { background: #222; color: #fff; border-color: #222; }
+        .btn-primary:hover { background: #444; }
+        .btn-success { background: #fff; color: #222; border-color: #222; font-weight: 600; }
+        .btn-success:hover { background: #f8f8f8; }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        .control-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+            cursor: pointer;
+        }
+        .groups-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            justify-items: center;
+        }
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .groups-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1200px) {
+            .groups-container { grid-template-columns: repeat(3, 1fr); }
+        }
+        .group {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 100%;
+        }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .group-title { font-size: 16px; color: #222; font-weight: 600; }
+        .group-info { font-size: 12px; color: #999; }
+        .template-preview {
+            position: relative;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0 auto;
+            border: 1px solid #e5e5e5;
+            max-width: 100%;
+        }
+        .slot {
+            position: absolute;
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: grab;
+            background: #f9f9f9;
+            box-sizing: content-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .slot:hover { border-color: #888; }
+        .slot.dragging { cursor: grabbing; border-color: #333; }
+        .slot.swap-source { border-color: #e94560; border-style: solid; box-shadow: 0 0 0 2px rgba(233,69,96,0.3); }
+        .slot.swap-target { border-color: #00d9ff; border-style: solid; box-shadow: 0 0 0 2px rgba(0,217,255,0.3); }
+        .slot img {
+            position: absolute;
+            top: 0; left: 0;
+            user-select: none;
+            pointer-events: none;
+            image-rendering: auto;
+        }
+        .slot-label {
+            position: absolute;
+            top: 4px; left: 4px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .slot-close {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 15;
+            line-height: 1;
+        }
+        .slot-close:hover { background: rgba(0,0,0,0.8); }
+        .resize-handle {
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 18px; height: 18px;
+            background: #333;
+            cursor: nwse-resize;
+            border-radius: 6px 0 0 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: white;
+        }
+        .resize-handle:hover { background: #555; }
+        .zoom-hint {
+            position: absolute;
+            bottom: 4px; left: 4px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .empty-slot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+            font-size: 13px;
+        }
+        .group-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+        .hidden-canvas { display: none; }
+    </style>
+</head>
+<body>
+
+
+    <div class="drop-zone" id="dropZone">
+        <h1>图片排版合并工具</h1>
+        <div class="icon">📁</div>
+        <input type="file" id="fileInput" multiple accept="image/*">
+        <p>点击或拖拽图片到此处上传 → 自动按模板排版 → 调整位置大小 → 下载 1200×1200 高清图</p>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="capacity">每组张数：</label>
+            <select id="capacity" onchange="onCapacityChange()">
+                <option value="2">2 张</option>
+                <option value="3">3 张</option>
+                <option value="4">4 张</option>
+                <option value="5" selected>5 张</option>
+                <option value="6">6 张</option>
+            </select>
+        </div>
+        <button class="btn" onclick="clearAll()">清空全部</button>
+        <button class="btn btn-success" onclick="downloadAll()">下载全部组合图</button>
+    </div>
+
+    <div class="groups-container" id="groupsContainer"></div>
+
+    <div class="toast" id="toast"></div>
+    <canvas class="hidden-canvas" id="exportCanvas"></canvas>
+
+    <script>
+        // ========== 全局常量 ==========
+        const EXPORT_SIZE = 1200;
+        const GAP = 6;
+        let GROUP_CAPACITY = 5;
+        const groups = [];
+        let swapSource = null; // 中键交换源 { groupIdx, slotIdx }
+
+        // ========== 响应式配置 ==========
+        function getPreviewSize() {
+            const w = window.innerWidth;
+            if (w >= 1200) {
+                const colW = Math.floor((w - 40 - 2 * 24) / 3);
+                return Math.max(300, colW - 32);
+            }
+            if (w >= 768) {
+                const colW = Math.floor((w - 40 - 24) / 2);
+                return Math.max(300, colW - 32);
+            }
+            return Math.max(300, Math.min(600, w - 48));
+        }
+
+        function onCapacityChange() {
+            const select = document.getElementById('capacity');
+            const newCapacity = parseInt(select.value);
+            if (newCapacity === GROUP_CAPACITY) return;
+            const totalImages = groups.reduce((sum, g) => sum + g.images.length, 0);
+            if (totalImages > 0) {
+                if (!confirm(`已添加 ${totalImages} 张图片，切换每组张数会清空当前分组并重新排版。确定继续？`)) {
+                    select.value = GROUP_CAPACITY;
+                    return;
+                }
+                groups.length = 0;
+            }
+            GROUP_CAPACITY = newCapacity;
+            renderAllGroups();
+            showToast(`已设置为每组 ${GROUP_CAPACITY} 张`);
+        }
+
+        // ========== 动态布局配置（支持 1~6 张） ==========
+        function getLayout(imageCount) {
+            switch (imageCount) {
+                case 1:
+                    return {
+                        cols: 1, rows: 1,
+                        slots: [{ row: 0, col: 0, rows: 1, cols: 1 }],
+                        name: '1张满屏'
+                    };
+                case 2:
+                    return {
+                        cols: 1, rows: 2,
+                        slots: [
+                            { row: 0, col: 0, rows: 1, cols: 1 },
+                            { row: 1, col: 0, rows: 1, cols: 1 }
+                        ],
+                        name: '2张（上下）'
+                    };
+                case 3:
+                    return {
+                        cols: 2, rows: 2,
+                        slots: [
+                            { row: 0, col: 0, rows: 1, cols: 1 },
+                            { row: 0, col: 1, rows: 1, cols: 1 },
+                            { row: 1, col: 0, rows: 1, cols: 2 }
+                        ],
+                        name: '3张（2+1）'
+                    };
+                case 4:
+                    return {
+                        cols: 2, rows: 2,
+                        slots: [
+                            { row: 0, col: 0, rows: 1, cols: 1 },
+                            { row: 0, col: 1, rows: 1, cols: 1 },
+                            { row: 1, col: 0, rows: 1, cols: 1 },
+                            { row: 1, col: 1, rows: 1, cols: 1 }
+                        ],
+                        name: '4张（2×2）'
+                    };
+                case 5:
+                    return {
+                        cols: 2, rows: 3,
+                        slots: [
+                            { row: 0, col: 0, rows: 1, cols: 1 },
+                            { row: 0, col: 1, rows: 1, cols: 1 },
+                            { row: 1, col: 0, rows: 1, cols: 2 },
+                            { row: 2, col: 0, rows: 1, cols: 1 },
+                            { row: 2, col: 1, rows: 1, cols: 1 }
+                        ],
+                        name: '5张（上2+中2+下1）'
+                    };
+                case 6:
+                    return {
+                        cols: 2, rows: 3,
+                        slots: [
+                            { row: 0, col: 0, rows: 1, cols: 1 },
+                            { row: 0, col: 1, rows: 1, cols: 1 },
+                            { row: 1, col: 0, rows: 1, cols: 1 },
+                            { row: 1, col: 1, rows: 1, cols: 1 },
+                            { row: 2, col: 0, rows: 1, cols: 1 },
+                            { row: 2, col: 1, rows: 1, cols: 1 }
+                        ],
+                        name: '6张（2×3）'
+                    };
+                default:
+                    return getLayout(GROUP_CAPACITY);
+            }
+        }
+
+        // ========== 计算 slot 像素位置和尺寸 ==========
+        function getSlotMetrics(layout, slotIdx, containerSize, gap) {
+            const cfg = layout.slots[slotIdx];
+            const baseW = Math.floor((containerSize - gap * (layout.cols + 1)) / layout.cols);
+            const baseH = Math.floor((containerSize - gap * (layout.rows + 1)) / layout.rows);
+            const slotW = baseW * cfg.cols + gap * (cfg.cols - 1);
+            const slotH = baseH * cfg.rows + gap * (cfg.rows - 1);
+            const left = gap + cfg.col * (baseW + gap);
+            const top = gap + cfg.row * (baseH + gap);
+            return { slotW, slotH, left, top };
+        }
+
+        function computeInitialTransform(imgData, slotW, slotH) {
+            const nw = imgData.naturalWidth || 1;
+            const nh = imgData.naturalHeight || 1;
+            const scale = Math.max(slotW / nw, slotH / nh);
+            return {
+                scale: isFinite(scale) ? scale : 1,
+                x: (slotW - nw * scale) / 2,
+                y: (slotH - nh * scale) / 2
+            };
+        }
+
+        // ========== DOM 元素 ==========
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const groupsContainer = document.getElementById('groupsContainer');
+        const toast = document.getElementById('toast');
+        const exportCanvas = document.getElementById('exportCanvas');
+
+        // ========== 拖拽上传（全局） ==========
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleFiles(files) {
+            const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+            if (imageFiles.length === 0) { showToast('请选择图片文件'); return; }
+
+            Promise.all(imageFiles.map(file => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            resolve({
+                                src: e.target.result,
+                                img: img,
+                                naturalWidth: img.naturalWidth,
+                                naturalHeight: img.naturalHeight
+                            });
+                        };
+                        img.onerror = () => {
+                            console.warn('图片加载失败:', file.name);
+                            resolve(null);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = () => {
+                        console.warn('文件读取失败:', file.name);
+                        resolve(null);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            })).then(results => {
+                const newImages = results.filter(r => r !== null);
+                if (newImages.length > 0) {
+                    addImagesToGroups(newImages);
+                } else {
+                    showToast('图片加载失败，请重试');
+                }
+            });
+        }
+
+        function addImagesToGroups(newImages) {
+            for (const imgData of newImages) {
+                let targetGroup = groups.find(g => g.images.length < GROUP_CAPACITY);
+                if (!targetGroup) {
+                    targetGroup = { id: groups.length, images: [] };
+                    groups.push(targetGroup);
+                }
+                targetGroup.images.push({ ...imgData });
+            }
+            renderAllGroups();
+        }
+
+        // ========== 渲染所有组 ==========
+        function renderAllGroups() {
+            groupsContainer.innerHTML = '';
+            groups.forEach((group, groupIdx) => renderGroup(group, groupIdx));
+        }
+
+        function renderGroup(group, groupIdx) {
+            const PREVIEW_SIZE = getPreviewSize();
+            const EXPORT_RATIO = EXPORT_SIZE / PREVIEW_SIZE;
+            const layout = getLayout(group.images.length);
+
+            group.images.forEach((img, idx) => {
+                const m = getSlotMetrics(layout, idx, PREVIEW_SIZE, GAP);
+                const layoutKey = layout.name + '_' + PREVIEW_SIZE;
+                if (img._layoutKey !== layoutKey) {
+                    const t = computeInitialTransform(img, m.slotW, m.slotH);
+                    img.scale = t.scale;
+                    img.x = t.x;
+                    img.y = t.y;
+                    img._layoutKey = layoutKey;
+                }
+            });
+
+            const groupEl = document.createElement('div');
+            groupEl.className = 'group';
+            groupEl.innerHTML = `
+                <div class="group-header">
+                    <span class="group-title">第 ${groupIdx + 1} 组</span>
+                    <span class="group-info">${layout.name} · ${group.images.length}/${GROUP_CAPACITY} 张</span>
+                </div>
+                <div class="template-preview" id="preview-${groupIdx}" style="width:${PREVIEW_SIZE}px;height:${PREVIEW_SIZE}px;"></div>
+                <div class="group-actions">
+                    <button class="btn btn-primary" onclick="downloadGroup(${groupIdx})">下载本组</button>
+                    <button class="btn" onclick="resetGroup(${groupIdx})">重置</button>
+                </div>
+            `;
+            groupsContainer.appendChild(groupEl);
+
+            const preview = groupEl.querySelector('.template-preview');
+            layout.slots.forEach((cfg, slotIdx) => {
+                const slot = document.createElement('div');
+                slot.className = 'slot';
+                slot.dataset.group = groupIdx;
+                slot.dataset.slot = slotIdx;
+
+                const m = getSlotMetrics(layout, slotIdx, PREVIEW_SIZE, GAP);
+                slot.style.cssText = `left:${m.left}px;top:${m.top}px;width:${m.slotW}px;height:${m.slotH}px;`;
+
+                if (slotIdx < group.images.length) {
+                    const imgData = group.images[slotIdx];
+                    const displayW = imgData.naturalWidth * imgData.scale;
+                    const displayH = imgData.naturalHeight * imgData.scale;
+                    slot.innerHTML = `
+                        <img id="img-${groupIdx}-${slotIdx}" src="${imgData.src}" draggable="false"
+                             style="width:${displayW}px;height:${displayH}px;left:${imgData.x}px;top:${imgData.y}px;">
+                        <span class="slot-label">${slotIdx + 1}</span>
+                        <span class="slot-close" onclick="removeSlotImage(${groupIdx}, ${slotIdx})">×</span>
+                        <span class="zoom-hint" id="zoom-${groupIdx}-${slotIdx}">${imgData.scale.toFixed(2)}x</span>
+                        <div class="resize-handle" data-g="${groupIdx}" data-s="${slotIdx}">↘</div>
+                    `;
+                    setupSlotInteraction(slot, groupIdx, slotIdx);
+                } else {
+                    slot.innerHTML = `<span class="empty-slot">${slotIdx + 1}</span>`;
+                }
+
+                // 支持拖入新图片到空 slot 或替换已有 slot
+                slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('swap-target'); });
+                slot.addEventListener('dragleave', () => slot.classList.remove('swap-target'));
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('swap-target');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0 && files[0].type.startsWith('image/')) {
+                        loadImageToSlot(files[0], groupIdx, slotIdx);
+                    }
+                });
+
+                preview.appendChild(slot);
+            });
+        }
+
+        // ========== 加载图片到指定 slot（替换或填充） ==========
+        function loadImageToSlot(file, groupIdx, slotIdx) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const group = groups[groupIdx];
+                    const newImg = {
+                        src: e.target.result,
+                        img: img,
+                        naturalWidth: img.naturalWidth,
+                        naturalHeight: img.naturalHeight,
+                        _layoutKey: null
+                    };
+                    if (slotIdx < group.images.length) {
+                        // 替换已有图片
+                        group.images[slotIdx] = newImg;
+                    } else {
+                        // 填充空位（这种情况在当前逻辑中较少发生）
+                        group.images.push(newImg);
+                    }
+                    renderAllGroups();
+                    showToast('图片已替换');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ========== 删除 slot 中的图片 ==========
+        function removeSlotImage(groupIdx, slotIdx) {
+            const group = groups[groupIdx];
+            if (slotIdx < group.images.length) {
+                group.images.splice(slotIdx, 1);
+                renderAllGroups();
+                showToast('已删除，可拖入新图片替换');
+            }
+        }
+
+        function updateSlotImage(groupIdx, slotIdx) {
+            const img = document.getElementById(`img-${groupIdx}-${slotIdx}`);
+            const zoom = document.getElementById(`zoom-${groupIdx}-${slotIdx}`);
+            if (!img) return;
+            const data = groups[groupIdx].images[slotIdx];
+            img.style.width = `${data.naturalWidth * data.scale}px`;
+            img.style.height = `${data.naturalHeight * data.scale}px`;
+            img.style.left = `${data.x}px`;
+            img.style.top = `${data.y}px`;
+            if (zoom) zoom.textContent = `${data.scale.toFixed(2)}x`;
+        }
+
+        // ========== 全局拖拽状态（左键调整 / 中键交换） ==========
+        let activeDrag = null;
+
+        document.addEventListener('mousemove', (e) => {
+            // 中键交换：高亮目标 slot
+            if (swapSource && e.buttons === 4) {
+                document.querySelectorAll('.slot.swap-target').forEach(el => el.classList.remove('swap-target'));
+                const target = e.target.closest('.slot');
+                if (target) target.classList.add('swap-target');
+                return;
+            }
+
+            if (!activeDrag) return;
+            const { groupIdx, slotIdx, type, startX, startY, startImgX, startImgY, startScale, slotEl } = activeDrag;
+            const data = groups[groupIdx].images[slotIdx];
+            const slotW = slotEl.clientWidth;
+            const slotH = slotEl.clientHeight;
+
+            if (type === 'move') {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                let newX = startImgX + dx;
+                let newY = startImgY + dy;
+                const imgW = data.naturalWidth * data.scale;
+                const imgH = data.naturalHeight * data.scale;
+                newX = Math.min(Math.max(newX, -imgW + 20), slotW - 20);
+                newY = Math.min(Math.max(newY, -imgH + 20), slotH - 20);
+                data.x = newX;
+                data.y = newY;
+                updateSlotImage(groupIdx, slotIdx);
+            }
+
+            if (type === 'resize') {
+                const dx = e.clientX - startX;
+                const sensitivity = 0.005;
+                let newScale = startScale + dx * sensitivity;
+                newScale = Math.max(0.01, Math.min(newScale, 5));
+                const oldW = data.naturalWidth * data.scale;
+                const oldH = data.naturalHeight * data.scale;
+                const newW = data.naturalWidth * newScale;
+                const newH = data.naturalHeight * newScale;
+                data.x -= (newW - oldW) / 2;
+                data.y -= (newH - oldH) / 2;
+                data.scale = newScale;
+                updateSlotImage(groupIdx, slotIdx);
+            }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            // 处理中键交换释放
+            if (e.button === 1 && swapSource) {
+                const targetSlot = e.target.closest('.slot');
+                if (targetSlot) {
+                    const targetGroupIdx = parseInt(targetSlot.dataset.group);
+                    const targetSlotIdx = parseInt(targetSlot.dataset.slot);
+                    if (targetGroupIdx === swapSource.groupIdx && targetSlotIdx !== swapSource.slotIdx) {
+                        const group = groups[targetGroupIdx];
+                        if (swapSource.slotIdx < group.images.length && targetSlotIdx < group.images.length) {
+                            const temp = group.images[swapSource.slotIdx];
+                            group.images[swapSource.slotIdx] = group.images[targetSlotIdx];
+                            group.images[targetSlotIdx] = temp;
+                            renderAllGroups();
+                            showToast('图片位置已交换');
+                        }
+                    }
+                }
+                document.querySelectorAll('.slot.swap-source').forEach(el => el.classList.remove('swap-source'));
+                document.querySelectorAll('.slot.swap-target').forEach(el => el.classList.remove('swap-target'));
+                swapSource = null;
+                return;
+            }
+
+            if (activeDrag && activeDrag.slotEl) {
+                activeDrag.slotEl.classList.remove('dragging');
+            }
+            activeDrag = null;
+        });
+
+        // ========== 交互：左键拖动 / 中键交换 / 手柄缩放 ==========
+        function setupSlotInteraction(slot, groupIdx, slotIdx) {
+            const handle = slot.querySelector('.resize-handle');
+
+            slot.addEventListener('mousedown', (e) => {
+                if (e.button === 1) { // 中键：标记交换源
+                    e.preventDefault();
+                    swapSource = { groupIdx, slotIdx };
+                    slot.classList.add('swap-source');
+                    return;
+                }
+                if (e.button !== 0) return; // 只处理左键
+                if (e.target === handle || e.target.closest('.resize-handle')) return;
+                if (e.target.closest('.slot-close')) return;
+                slot.classList.add('dragging');
+                const data = groups[groupIdx].images[slotIdx];
+                activeDrag = {
+                    groupIdx, slotIdx, type: 'move',
+                    startX: e.clientX, startY: e.clientY,
+                    startImgX: data.x, startImgY: data.y,
+                    slotEl: slot
+                };
+                e.preventDefault();
+            });
+
+            handle.addEventListener('mousedown', (e) => {
+                if (e.button !== 0) return;
+                const data = groups[groupIdx].images[slotIdx];
+                activeDrag = {
+                    groupIdx, slotIdx, type: 'resize',
+                    startX: e.clientX, startY: e.clientY,
+                    startScale: data.scale,
+                    slotEl: slot
+                };
+                e.stopPropagation();
+                e.preventDefault();
+            });
+        }
+
+        // ========== 下载功能 ==========
+        function drawGroupToCanvas(groupIdx, canvas) {
+            const ctx = canvas.getContext('2d');
+            const group = groups[groupIdx];
+            const layout = getLayout(group.images.length);
+            const PREVIEW_SIZE = getPreviewSize();
+            const EXPORT_RATIO = EXPORT_SIZE / PREVIEW_SIZE;
+
+            canvas.width = EXPORT_SIZE;
+            canvas.height = EXPORT_SIZE;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, EXPORT_SIZE, EXPORT_SIZE);
+
+            const g = Math.floor(GAP * EXPORT_RATIO);
+
+            layout.slots.forEach((cfg, slotIdx) => {
+                if (slotIdx >= group.images.length) return;
+                const data = group.images[slotIdx];
+                const m = getSlotMetrics(layout, slotIdx, EXPORT_SIZE, g);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(m.left, m.top, m.slotW, m.slotH);
+                ctx.clip();
+
+                const imgW = data.naturalWidth * data.scale * EXPORT_RATIO;
+                const imgH = data.naturalHeight * data.scale * EXPORT_RATIO;
+                const imgX = m.left + data.x * EXPORT_RATIO;
+                const imgY = m.top + data.y * EXPORT_RATIO;
+                ctx.drawImage(data.img, imgX, imgY, imgW, imgH);
+
+                ctx.restore();
+            });
+        }
+
+        function downloadGroup(groupIdx) {
+            const group = groups[groupIdx];
+            if (group.images.length === 0) { showToast('该组没有图片'); return; }
+
+            const canvas = exportCanvas;
+            drawGroupToCanvas(groupIdx, canvas);
+
+            const link = document.createElement('a');
+            link.download = `排版组合_第${groupIdx + 1}组_${group.images.length}张.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast(`第 ${groupIdx + 1} 组下载成功！`);
+        }
+
+        function downloadAll() {
+            if (groups.length === 0 || groups.every(g => g.images.length === 0)) {
+                showToast('没有可下载的图片组'); return;
+            }
+            groups.forEach((g, i) => {
+                if (g.images.length > 0) setTimeout(() => downloadGroup(i), i * 300);
+            });
+            showToast('开始下载全部组合图...');
+        }
+
+        function resetGroup(groupIdx) {
+            const group = groups[groupIdx];
+            if (group.images.length === 0) { showToast('该组没有图片'); return; }
+            group.images.forEach(img => { img._layoutKey = null; });
+            renderAllGroups();
+            showToast(`第 ${groupIdx + 1} 组已重置为默认`);
+        }
+
+        function clearAll() {
+            groups.length = 0;
+            renderAllGroups();
+            showToast('已全部清空');
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // 滚轮缩放支持
+        document.addEventListener('wheel', (e) => {
+            const slot = e.target.closest('.slot');
+            if (!slot) return;
+            const img = slot.querySelector('img');
+            if (!img) return;
+            const parts = img.id.split('-');
+            const g = parseInt(parts[1]);
+            const s = parseInt(parts[2]);
+            if (isNaN(g) || isNaN(s)) return;
+            e.preventDefault();
+            const data = groups[g].images[s];
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            const oldW = data.naturalWidth * data.scale;
+            const oldH = data.naturalHeight * data.scale;
+            let newScale = data.scale * delta;
+            newScale = Math.max(0.01, Math.min(newScale, 5));
+            const newW = data.naturalWidth * newScale;
+            const newH = data.naturalHeight * newScale;
+            data.x -= (newW - oldW) / 2;
+            data.y -= (newH - oldH) / 2;
+            data.scale = newScale;
+            updateSlotImage(g, s);
+        }, { passive: false });
+    </script>
+</body>
+</html>
