@@ -234,7 +234,7 @@
         <h1>图片排版合并工具</h1>
         <div class="icon">📁</div>
         <input type="file" id="fileInput" multiple accept="image/*">
-        <p>点击或拖拽图片到此处上传 → 自动按模板排版 → 调整位置大小 → 下载 1200×1200 高清图</p>
+        <p>点击或拖拽图片到此处上传 → 自动按模板排版 → 左键调整位置、滑轮调整大小、中键交换图片 → 下载 1200×1200 高清图</p>
     </div>
 
     <div class="controls">
@@ -260,7 +260,7 @@
     <script>
         // ========== 全局常量 ==========
         const EXPORT_SIZE = 1200;
-        const GAP = 6;
+        const GAP = 2;
         let GROUP_CAPACITY = 5;
         const groups = [];
         let swapSource = null; // 中键交换源 { groupIdx, slotIdx }
@@ -345,7 +345,7 @@
                             { row: 2, col: 0, rows: 1, cols: 1 },
                             { row: 2, col: 1, rows: 1, cols: 1 }
                         ],
-                        name: '5张（上2+中2+下1）'
+                        name: '5张（上2+中1+下2）'
                     };
                 case 6:
                     return {
